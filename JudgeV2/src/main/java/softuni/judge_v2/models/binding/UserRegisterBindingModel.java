@@ -1,33 +1,31 @@
-package softuni.judge_v2.models.entity;
+package softuni.judge_v2.models.binding;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
+public class UserRegisterBindingModel {
 
     private String username;
     private String password;
+    private String confirmPassword;
     private String email;
     private String git;
-    private Role role;
 
-    public User() {
+    public UserRegisterBindingModel() {
     }
 
-    public User(String username, String password, String email, String git, Role role) {
+    public UserRegisterBindingModel(String username, String password, String confirmPassword, String email, String git) {
         this.username = username;
         this.password = password;
+        this.confirmPassword = confirmPassword;
         this.email = email;
         this.git = git;
-        this.role = role;
     }
 
-    @Column(name = "username", nullable = false)
+    @NotNull
     @Length(min = 2, message = "username length must be minimum two characters!")
     public String getUsername() {
         return username;
@@ -37,7 +35,7 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
-    @Column(name = "password", nullable = false)
+    @NotNull
     @Length(min = 2, message = "password length must be minimum two characters!")
     public String getPassword() {
         return password;
@@ -47,7 +45,15 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    @Column(name = "email", nullable = false)
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    @NotNull
     @Email(message = "email must contains '@'")
     public String getEmail() {
         return email;
@@ -57,23 +63,14 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
+    @NotNull
     @Pattern(regexp = "https:\\/\\/github.com\\/.*\\/SpringTestData\\/.*",
             message = "git must be a valid github address in pattern: https://github.com/{username}/SpringTestData/…")
-    @Column(name = "git", nullable = false)
     public String getGit() {
         return git;
     }
 
     public void setGit(String git) {
         this.git = git;
-    }
-
-    @ManyToOne
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

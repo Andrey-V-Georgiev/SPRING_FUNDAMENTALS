@@ -1,6 +1,5 @@
 package softuni.judge_v2.models.entity;
 
-import softuni.judge_v2.enums.Roles;
 
 import javax.persistence.*;
 
@@ -8,22 +7,21 @@ import javax.persistence.*;
 @Table(name = "roles")
 public class Role extends BaseEntity {
 
-    private Roles name;
+    private String name;
 
     public Role() {
     }
 
-    public Role(Roles name) {
+    public Role(String name) {
         this.name = name;
     }
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false)
-    public Roles getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Roles name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

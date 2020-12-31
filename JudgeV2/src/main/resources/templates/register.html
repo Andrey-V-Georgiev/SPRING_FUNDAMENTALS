@@ -28,15 +28,11 @@
                                        class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
                                        id="username" placeholder="Enter username">
                                 <!--ERRORS-->
-                                <small th:each="e : ${#fields.errors('username')}" th:text="${e}" class="text-danger">
-                                </small>
-                                <small th:each="e : ${#fields.errors()}">
-                                    <p th:text="${e}" class="text-danger"></p>
-                                </small>
-                                <p th:if="${#fields.hasErrors('username')}" class="errors alert alert-danger"
-                                   th:errors="*{username}">
-                                    Last name is required.
-                                </p>
+                                <th:block th:each="e : ${#fields.errors('username')}">
+                                    <div>
+                                        <small class="text-danger" th:text="${e}"> </small>
+                                    </div>
+                                </th:block>
                             </div>
 
                             <div class="input-group mt-3">
@@ -44,9 +40,10 @@
                                 <input th:name="password" th:field="*{password}" type="password"
                                        class="form-control validate"
                                        id="password" placeholder="Enter password">
-                                <th:block th:each="err : ${#fields.errors('password')}">
-                                    <div class="mx-auto">
-                                        <small class="text-danger" th:text="${err.chars()}"> </small>
+                                <!--ERRORS-->
+                                <th:block th:each="e : ${#fields.errors('password')}">
+                                    <div>
+                                        <small class="text-danger" th:text="${e}"> </small>
                                     </div>
                                 </th:block>
                             </div>
@@ -57,11 +54,12 @@
                                 <input th:name="confirmPassword" th:field="*{confirmPassword}" type="password"
                                        class="form-control validate"
                                        id="confirmPassword" placeholder="Confirm password">
-                                <!--                                <div class="mx-auto">-->
-                                <!--                                    <th:block th:if="${passwordMismatch}">-->
-                                <!--                                        <small class="text-danger">Confirmed password must match</small>-->
-                                <!--                                    </th:block>-->
-                                <!--                                </div>-->
+                                <!--ERRORS-->
+                                <th:block th:if="${passwordMismatch}">
+                                    <div>
+                                        <small class="text-danger">Confirmed password must match</small>
+                                    </div>
+                                </th:block>
                             </div>
 
                             <div class="input-group mt-3">
@@ -70,9 +68,10 @@
                                 <input th:name="email" th:field="*{email}" type="email" class="form-control validate"
                                        id="email"
                                        placeholder="Enter email">
-                                <th:block th:each="err : ${#fields.errors('email')}">
-                                    <div class="mx-auto">
-                                        <small class="text-danger" th:text="${err.chars()}"> </small>
+                                <!--ERRORS-->
+                                <th:block th:each="e : ${#fields.errors('email')}">
+                                    <div>
+                                        <small class="text-danger" th:text="${e}"> </small>
                                     </div>
                                 </th:block>
                             </div>
@@ -82,9 +81,10 @@
                                 <input th:name="git" th:field="*{git}" type="text" class="form-control validate"
                                        id="git"
                                        placeholder="Enter git">
-                                <th:block th:each="err : ${#fields.errors('git')}">
-                                    <div class="mx-auto">
-                                        <small class="text-danger" th:text="${err.chars()}"> </small>
+                                <!--ERRORS-->
+                                <th:block th:each="e : ${#fields.errors('git')}">
+                                    <div>
+                                        <small class="text-danger" th:text="${e}"> </small>
                                     </div>
                                 </th:block>
                             </div>

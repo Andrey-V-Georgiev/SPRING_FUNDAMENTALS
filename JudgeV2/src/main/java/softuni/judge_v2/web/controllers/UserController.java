@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import softuni.judge_v2.constants.GlobalConstants;
 import softuni.judge_v2.models.binding.UserLoginBindingModel;
 import softuni.judge_v2.models.binding.UserRegisterBindingModel;
 import softuni.judge_v2.models.service.UserServiceModel;
@@ -18,6 +19,8 @@ import softuni.judge_v2.services.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static softuni.judge_v2.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 
 
 @Controller
@@ -50,14 +53,14 @@ public class UserController {
         /* If errors in binding result */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
             return "redirect:/user/register";
         }
         /* Validate password and confirmPassword match */
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             redirectAttributes.addFlashAttribute("passwordMismatch", true);
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
             return "redirect:/user/register";
         }
         UserServiceModel userServiceModel = this.modelMapper.map(userRegisterBindingModel, UserServiceModel.class);
@@ -84,7 +87,7 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
             return "redirect:/user/login";
         } else {
             UserServiceModel userServiceModel = this.userService.findByUsername(userLoginBindingModel.getUsername());
@@ -92,14 +95,14 @@ public class UserController {
             if (userServiceModel == null) {
                 redirectAttributes.addFlashAttribute("incorrectUsername", true);
                 redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
-                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+                redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
                 return "redirect:/user/login";
             }
 
             if (!userServiceModel.getPassword().equals(userLoginBindingModel.getPassword())) {
                 redirectAttributes.addFlashAttribute("wrongPassword", true);
                 redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
-                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+                redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
                 return "redirect:/user/login";
             }
 
@@ -114,5 +117,12 @@ public class UserController {
     public String logout(HttpSession httpSession) {
         httpSession.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/profile")
+    public String userProfile() {
+
+
+        return "profile";
     }
 }

@@ -24,12 +24,12 @@
 
                             <div class="input-group">
                                 <label for="username" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
-                                <input th:name="username" th:field="*{username}" type="text"
+                                <input th:name="username" th:field="*{username}" type="text" th:errorClass="bg-danger"
                                        class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
                                        id="username" placeholder="Enter username">
                                 <!--ERRORS-->
                                 <th:block th:each="e : ${#fields.errors('username')}">
-                                    <div>
+                                    <div class="mx-auto text-center">
                                         <small class="text-danger" th:text="${e}"> </small>
                                     </div>
                                 </th:block>
@@ -37,12 +37,12 @@
 
                             <div class="input-group mt-3">
                                 <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
-                                <input th:name="password" th:field="*{password}" type="password"
+                                <input th:name="password" th:field="*{password}" type="password" th:errorClass="bg-danger"
                                        class="form-control validate"
                                        id="password" placeholder="Enter password">
                                 <!--ERRORS-->
                                 <th:block th:each="e : ${#fields.errors('password')}">
-                                    <div>
+                                    <div class="mx-auto text-center">
                                         <small class="text-danger" th:text="${e}"> </small>
                                     </div>
                                 </th:block>
@@ -51,12 +51,12 @@
                             <div class="input-group mt-3">
                                 <label for="confirmPassword" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Confirm
                                     Password</label>
-                                <input th:name="confirmPassword" th:field="*{confirmPassword}" type="password"
+                                <input th:name="confirmPassword" th:field="*{confirmPassword}" type="password" th:errorClass="bg-danger"
                                        class="form-control validate"
                                        id="confirmPassword" placeholder="Confirm password">
                                 <!--ERRORS-->
                                 <th:block th:if="${passwordMismatch}">
-                                    <div>
+                                    <div class="mx-auto text-center">
                                         <small class="text-danger">Confirmed password must match</small>
                                     </div>
                                 </th:block>
@@ -65,12 +65,12 @@
                             <div class="input-group mt-3">
                                 <label for="email"
                                        class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Email</label>
-                                <input th:name="email" th:field="*{email}" type="email" class="form-control validate"
+                                <input th:name="email" th:field="*{email}" type="email" class="form-control validate" th:errorClass="bg-danger"
                                        id="email"
                                        placeholder="Enter email">
                                 <!--ERRORS-->
                                 <th:block th:each="e : ${#fields.errors('email')}">
-                                    <div>
+                                    <div class="mx-auto text-center">
                                         <small class="text-danger" th:text="${e}"> </small>
                                     </div>
                                 </th:block>
@@ -78,12 +78,12 @@
 
                             <div class="input-group mt-3">
                                 <label for="git" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Git</label>
-                                <input th:name="git" th:field="*{git}" type="text" class="form-control validate"
+                                <input th:name="git" th:field="*{git}" type="text" class="form-control validate" th:errorClass="bg-danger"
                                        id="git"
                                        placeholder="Enter git">
                                 <!--ERRORS-->
                                 <th:block th:each="e : ${#fields.errors('git')}">
-                                    <div>
+                                    <div class="mx-auto text-center">
                                         <small class="text-danger" th:text="${e}"> </small>
                                     </div>
                                 </th:block>
@@ -101,9 +101,11 @@
     </div>
 
 </div>
+
 <footer class="row">
     <th:block th:include="~{/fragments/footer}"></th:block>
 </footer>
+
 </body>
 
 </html>

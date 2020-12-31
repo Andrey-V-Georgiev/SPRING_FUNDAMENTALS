@@ -1,33 +1,29 @@
-package softuni.judge_v2.models.entity;
+package softuni.judge_v2.models.binding;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "exercises")
-public class Exercise extends BaseEntity {
+public class ExerciseAddBindingModel {
 
     private String name;
     private LocalDateTime startedOn;
     private LocalDateTime dueDate;
 
-    public Exercise() {
+    public ExerciseAddBindingModel() {
     }
 
-    public Exercise(String name, LocalDateTime startedOn, LocalDateTime dueDate) {
+    public ExerciseAddBindingModel(String name, LocalDateTime startedOn, LocalDateTime dueDate) {
         this.name = name;
         this.startedOn = startedOn;
         this.dueDate = dueDate;
     }
 
-    @Column(name = "name", nullable = false)
+    @NotNull
     @Length(min = 2, message = "name length must be minimum two characters!")
     public String getName() {
         return name;
@@ -37,9 +33,9 @@ public class Exercise extends BaseEntity {
         this.name = name;
     }
 
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @PastOrPresent(message = "date cannot be in the future")
-    @Column(name = "started_on", nullable = false)
     public LocalDateTime getStartedOn() {
         return startedOn;
     }
@@ -48,9 +44,9 @@ public class Exercise extends BaseEntity {
         this.startedOn = startedOn;
     }
 
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @FutureOrPresent(message = "date cannot be in the past")
-    @Column(name = "due_date", nullable = false)
     public LocalDateTime getDueDate() {
         return dueDate;
     }

@@ -23,7 +23,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(Model model, HttpSession httpSession) {
-        if(!this.authService.haveSession()) {
+        if(!this.authService.haveSession(httpSession)) {
            return "redirect:/";
         }
         return "home";

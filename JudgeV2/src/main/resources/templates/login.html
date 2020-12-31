@@ -25,29 +25,37 @@
 
                             <div class="input-group">
                                 <label for="username" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
-                                <input th:field="*{username}" th:name="username" type="text"
+                                <input th:field="*{username}" th:name="username" type="text" th:errorClass="bg-danger"
                                        class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
                                        id="username" placeholder="Username" required>
                                 <!-- ERRORS -->
                                 <th:block th:each="e : ${#fields.errors('username')}">
-                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                    <div class="mx-auto text-center">
+                                        <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                    </div>
                                 </th:block>
                                 <th:block th:if="${incorrectUsername}">
-                                    <small class="text-danger col-12 text-center">Incorrect username</small>
+                                    <div class="mx-auto text-center">
+                                        <small class="text-danger col-12 text-center">Incorrect username</small>
+                                    </div>
                                 </th:block>
                             </div>
 
                             <div class="input-group mt-3">
                                 <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
-                                <input th:field="*{password}" th:name="password" type="password"
+                                <input th:field="*{password}" th:name="password" type="password" th:errorClass="bg-danger"
                                        class="form-control validate"
                                        id="password" placeholder="Password" required>
                                 <!-- ERRORS -->
                                 <th:block th:each="e : ${#fields.errors('password')}">
-                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                    <div class="mx-auto text-center">
+                                        <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                    </div>
                                 </th:block>
                                 <th:block th:if="${wrongPassword}">
-                                    <small class="text-danger col-12 text-center">Wrong password</small>
+                                    <div class="mx-auto text-center">
+                                        <small class="text-danger col-12 text-center">Wrong password</small>
+                                    </div>
                                 </th:block>
                             </div>
                             <div class="input-group mt-3">

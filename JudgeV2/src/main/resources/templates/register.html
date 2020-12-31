@@ -20,64 +20,75 @@
 
                         <form th:object="${userRegisterBindingModel}" th:action="@{/user/register}" method="POST"
                               class="tm-login-form">
-                            <div class="input-group">
 
+
+                            <div class="input-group">
                                 <label for="username" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
                                 <input th:name="username" th:field="*{username}" type="text"
                                        class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
                                        id="username" placeholder="Enter username">
-                                <div class="mx-auto">
-                                    <small class="text-danger">Username must be between 2 and 10 characters</small>
-                                </div>
-
+                                <!--ERRORS-->
+                                <small th:each="e : ${#fields.errors('username')}" th:text="${e}" class="text-danger">
+                                </small>
+                                <small th:each="e : ${#fields.errors()}">
+                                    <p th:text="${e}" class="text-danger"></p>
+                                </small>
+                                <p th:if="${#fields.hasErrors('username')}" class="errors alert alert-danger"
+                                   th:errors="*{username}">
+                                    Last name is required.
+                                </p>
                             </div>
-                            <div class="input-group mt-3">
 
+                            <div class="input-group mt-3">
                                 <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
                                 <input th:name="password" th:field="*{password}" type="password"
                                        class="form-control validate"
                                        id="password" placeholder="Enter password">
-                                <div class="mx-auto">
-                                    <small class="text-danger">Password must be betweeen 3 and 10 characters</small>
-                                </div>
-
+                                <th:block th:each="err : ${#fields.errors('password')}">
+                                    <div class="mx-auto">
+                                        <small class="text-danger" th:text="${err.chars()}"> </small>
+                                    </div>
+                                </th:block>
                             </div>
-                            <div class="input-group mt-3">
 
+                            <div class="input-group mt-3">
                                 <label for="confirmPassword" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Confirm
                                     Password</label>
                                 <input th:name="confirmPassword" th:field="*{confirmPassword}" type="password"
                                        class="form-control validate"
                                        id="confirmPassword" placeholder="Confirm password">
-                                <div class="mx-auto">
-                                    <th:block  th:if="${msg}">
-                                        <small class="text-danger"> </small>
-                                    </th:block>
-                                </div>
+                                <!--                                <div class="mx-auto">-->
+                                <!--                                    <th:block th:if="${passwordMismatch}">-->
+                                <!--                                        <small class="text-danger">Confirmed password must match</small>-->
+                                <!--                                    </th:block>-->
+                                <!--                                </div>-->
                             </div>
-                            <div class="input-group mt-3">
 
+                            <div class="input-group mt-3">
                                 <label for="email"
                                        class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Email</label>
                                 <input th:name="email" th:field="*{email}" type="email" class="form-control validate"
                                        id="email"
                                        placeholder="Enter email">
-                                <div class="mx-auto">
-                                    <small class="text-danger">Enter valid email address</small>
-                                </div>
-
+                                <th:block th:each="err : ${#fields.errors('email')}">
+                                    <div class="mx-auto">
+                                        <small class="text-danger" th:text="${err.chars()}"> </small>
+                                    </div>
+                                </th:block>
                             </div>
-                            <div class="input-group mt-3">
 
+                            <div class="input-group mt-3">
                                 <label for="git" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Git</label>
                                 <input th:name="git" th:field="*{git}" type="text" class="form-control validate"
                                        id="git"
                                        placeholder="Enter git">
-                                <div class="mx-auto text-center align-content-center">
-                                    <small class="text-danger">Enter git address following this pattern </small>
-                                </div>
-
+                                <th:block th:each="err : ${#fields.errors('git')}">
+                                    <div class="mx-auto">
+                                        <small class="text-danger" th:text="${err.chars()}"> </small>
+                                    </div>
+                                </th:block>
                             </div>
+
                             <div class="input-group mt-3">
                                 <button type="submit" class="btn btn-primary d-inline-block mx-auto">Register</button>
                             </div>

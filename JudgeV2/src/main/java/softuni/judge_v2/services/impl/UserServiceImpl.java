@@ -4,11 +4,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.judge_v2.constants.GlobalConstants;
-import softuni.judge_v2.models.binding.UserLoginBindingModel;
 import softuni.judge_v2.models.binding.UserRegisterBindingModel;
 import softuni.judge_v2.models.entity.Role;
 import softuni.judge_v2.models.entity.User;
 import softuni.judge_v2.models.service.RoleServiceModel;
+import softuni.judge_v2.models.service.UserServiceModel;
 import softuni.judge_v2.repositories.UserRepository;
 import softuni.judge_v2.services.RoleService;
 import softuni.judge_v2.services.UserService;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(UserRegisterBindingModel userRegisterBindingModel) {
+    public UserServiceModel registerUser(UserServiceModel userServiceModel) {
         /* Determine user role */
         Role userRole;
         if (this.userRepository.count() == 0) {
@@ -39,13 +39,20 @@ public class UserServiceImpl implements UserService {
             userRole = this.modelMapper.map(roleServiceModelUser, Role.class);
         }
         /* Save user to DB */
-        User user = this.modelMapper.map(userRegisterBindingModel, User.class);
+        User user = this.modelMapper.map(userServiceModel, User.class);
         user.setRole(userRole);
-        this.userRepository.saveAndFlush(user);
+
+        User savedUser = this.userRepository.saveAndFlush(user);
+        return this.modelMapper.map(savedUser, UserServiceModel.class);
     }
 
     @Override
-    public void login(UserLoginBindingModel userLoginBindingModel) {
+    public UserServiceModel findByUsername(String username) {
 
+        return this.userRepository.findUserByUsername(username)
+                .map(u -> this.modelMapper.map(u, UserServiceModel.class))
+                .orElse(null);
     }
+
+
 }

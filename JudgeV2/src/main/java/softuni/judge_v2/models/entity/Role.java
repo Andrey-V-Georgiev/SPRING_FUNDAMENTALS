@@ -16,7 +16,7 @@ public class Role extends BaseEntity {
         this.name = name;
     }
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false,unique = true)
     public String getName() {
         return name;
     }

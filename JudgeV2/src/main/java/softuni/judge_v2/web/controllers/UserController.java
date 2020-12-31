@@ -1,5 +1,6 @@
 package softuni.judge_v2.web.controllers;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,60 +11,113 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import softuni.judge_v2.models.binding.UserLoginBindingModel;
 import softuni.judge_v2.models.binding.UserRegisterBindingModel;
+import softuni.judge_v2.models.service.UserServiceModel;
 import softuni.judge_v2.services.UserService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/register")
-    public ModelAndView register(ModelAndView modelAndView) {
-        if (!modelAndView.getModel().containsKey("userRegisterBindingModel")) {
-            modelAndView.addObject("userRegisterBindingModel", new UserRegisterBindingModel());
-        }
-        modelAndView.setViewName("register");
-        return modelAndView;
+    public String register(
+            @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel
+    ) {
+        return "register";
     }
 
     @PostMapping("/register")
     public String registerConfirm(
             @Valid @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            Model model
+            RedirectAttributes redirectAttributes
     ) {
         /* If errors in binding result */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-            return "redirect: /user/register";
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+            return "redirect:register";
         }
         /* Validate password and confirmPassword match */
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
-            redirectAttributes.addAttribute("msg", "Some message");
-            return "redirect: /user/register";
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute("passwordMismatch", true);
+            return "redirect:register";
         }
-
-        this.userService.register(userRegisterBindingModel);
+        UserServiceModel userServiceModel = this.modelMapper.map(userRegisterBindingModel, UserServiceModel.class);
+        this.userService.registerUser(userServiceModel);
         return "redirect:login";
     }
 
+
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        if (!model.containsAttribute("userLoginBindingModel")) {
+            model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
+        }
         return "login";
     }
 
+    // @GetMapping("/login2")
+    // public String login2(Model model) {
+    //
+    //     System.out.println();
+    //
+    //     if(!model.containsAttribute("userLoginBindingModel")){
+    //         model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
+    //     }
+    //     return "login";
+    // }
+
     @PostMapping("/login")
-    public String loginConfirm() {
-        return "redirect:/home";
+    public String loginConfirm(
+            @Valid @ModelAttribute("userLoginBindingModel") UserLoginBindingModel userLoginBindingModel,
+            BindingResult bindingResult,
+            HttpSession httpSession,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+            return "redirect:/user/login";
+        } else {
+            UserServiceModel userServiceModel = this.userService.findByUsername(userLoginBindingModel.getUsername());
+
+            if (userServiceModel == null) {
+                redirectAttributes.addFlashAttribute("incorrectUsername", true);
+                redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+                return "redirect:/user/login";
+            }
+
+            if (!userServiceModel.getPassword().equals(userLoginBindingModel.getPassword())) {
+                redirectAttributes.addFlashAttribute("wrongPassword", true);
+                redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+                return "redirect:/user/login";
+            }
+
+            httpSession.setAttribute("userServiceModel", userServiceModel);
+            httpSession.setAttribute("id", userServiceModel.getId());
+            httpSession.setAttribute("role", userServiceModel.getRole().getName());
+            return "redirect:/";
+        }
     }
 }

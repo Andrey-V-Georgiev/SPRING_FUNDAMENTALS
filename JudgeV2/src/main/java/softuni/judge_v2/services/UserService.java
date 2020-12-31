@@ -1,11 +1,10 @@
 package softuni.judge_v2.services;
 
-import softuni.judge_v2.models.binding.UserLoginBindingModel;
-import softuni.judge_v2.models.binding.UserRegisterBindingModel;
+import softuni.judge_v2.models.service.UserServiceModel;
 
 public interface UserService {
 
-    void register(UserRegisterBindingModel userRegisterBindingModel);
+    UserServiceModel registerUser(UserServiceModel userServiceModel);
 
-    void login(UserLoginBindingModel userLoginBindingModel);
+    UserServiceModel findByUsername(String username);
 }

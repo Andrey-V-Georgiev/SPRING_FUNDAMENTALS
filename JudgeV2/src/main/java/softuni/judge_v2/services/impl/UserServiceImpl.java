@@ -13,6 +13,9 @@ import softuni.judge_v2.repositories.UserRepository;
 import softuni.judge_v2.services.RoleService;
 import softuni.judge_v2.services.UserService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -52,6 +55,27 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findUserByUsername(username)
                 .map(u -> this.modelMapper.map(u, UserServiceModel.class))
                 .orElse(null);
+    }
+
+    @Override
+    public List<String> findAllUsernames() {
+        List<User> allUsers = this.userRepository.findAll();
+        return allUsers.stream().map(User::getUsername).collect(Collectors.toList());
+    }
+
+    @Override
+    public void changeUserRole(String username, String role) {
+
+        UserServiceModel userServiceModel = this.userRepository
+                .findUserByUsername(username)
+                .map(u -> this.modelMapper.map(u, UserServiceModel.class))
+                .orElse(null);
+
+        if (!userServiceModel.getRole().getName().equals(role)) {
+            RoleServiceModel roleServiceModel = this.roleService.findRoleByName(role);
+            userServiceModel.setRole(roleServiceModel);
+            this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
+        }
     }
 
 

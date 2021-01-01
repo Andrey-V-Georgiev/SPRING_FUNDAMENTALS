@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 
 public class UserServiceModel extends BaseServiceModel {
 
-
     private String username;
     private String password;
     private String email;

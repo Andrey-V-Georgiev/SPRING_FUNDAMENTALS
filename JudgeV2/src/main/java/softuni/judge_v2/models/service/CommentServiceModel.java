@@ -1,27 +1,22 @@
-package softuni.judge_v2.models.entity;
+package softuni.judge_v2.models.service;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "comments")
-public class Comment extends BaseEntity {
+public class CommentServiceModel {
 
     private Integer score;
     private String textContent;
-    private User author;
-    private Homework homework;
+    private UserServiceModel author;
+    private HomeworkServiceModel homework;
 
-    public Comment() {
+    public CommentServiceModel() {
     }
 
-    public Comment(Integer score, String textContent, User author, Homework homework) {
+    public CommentServiceModel(Integer score, String textContent, UserServiceModel author, HomeworkServiceModel homework) {
         this.score = score;
         this.textContent = textContent;
         this.author = author;
         this.homework = homework;
     }
 
-    @Column(name = "score")
     public Integer getScore() {
         return score;
     }
@@ -30,7 +25,6 @@ public class Comment extends BaseEntity {
         this.score = score;
     }
 
-    @Column(name = "text_content", columnDefinition = "TEXT")
     public String getTextContent() {
         return textContent;
     }
@@ -39,21 +33,19 @@ public class Comment extends BaseEntity {
         this.textContent = textContent;
     }
 
-    @ManyToOne
-    public User getAuthor() {
+    public UserServiceModel getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserServiceModel author) {
         this.author = author;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    public Homework getHomework() {
+    public HomeworkServiceModel getHomework() {
         return homework;
     }
 
-    public void setHomework(Homework homework) {
+    public void setHomework(HomeworkServiceModel homework) {
         this.homework = homework;
     }
 }

@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.judge_v2.models.binding.HomeworkAddBindingModel;
+import softuni.judge_v2.models.binding.CommentAddBindingModel;
+import softuni.judge_v2.models.service.CommentServiceModel;
 import softuni.judge_v2.models.view.ExerciseViewModel;
+import softuni.judge_v2.services.CommentService;
 import softuni.judge_v2.services.ExerciseService;
 import softuni.judge_v2.services.HomeworkService;
 
@@ -29,12 +32,14 @@ public class HomeworkController {
     private final ModelMapper modelMapper;
     private final ExerciseService exerciseService;
     private final HomeworkService homeworkService;
+    private final CommentService commentService;
 
     @Autowired
-    public HomeworkController(ModelMapper modelMapper, ExerciseService exerciseService, HomeworkService homeworkService) {
+    public HomeworkController(ModelMapper modelMapper, ExerciseService exerciseService, HomeworkService homeworkService, CommentService commentService) {
         this.modelMapper = modelMapper;
         this.exerciseService = exerciseService;
         this.homeworkService = homeworkService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/add")
@@ -67,10 +72,29 @@ public class HomeworkController {
         }
     }
 
+    @GetMapping("/check")
+    public String checkHomework(Model model) {
+        if (!model.containsAttribute("commentAddBindingModel")) {
+            model.addAttribute("commentAddBindingModel", new CommentAddBindingModel());
+        }
+        model.addAttribute("homeworkServiceModel", this.homeworkService.findHomeworkByLowestComments());
+        return "homework-check";
+    }
+
     @PostMapping("/check")
-    public String checkHomework() {
-
-
-        return null;
+    public String checkHomeworkConfirm(
+            @Valid @ModelAttribute("commentAddBindingModel") CommentAddBindingModel commentAddBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            HttpSession httpSession
+    ) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("commentAddBindingModel", commentAddBindingModel);
+            redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "commentAddBindingModel", bindingResult);
+            return "redirect:/homework/check";
+        } else {
+            CommentServiceModel commentServiceModel = this.commentService.addComment(commentAddBindingModel, httpSession);
+            return "redirect:/home";
+        }
     }
 }

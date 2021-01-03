@@ -14,6 +14,7 @@ import softuni.judge_v2.services.HomeworkService;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class HomeworkServiceImpl implements HomeworkService {
@@ -50,5 +51,18 @@ public class HomeworkServiceImpl implements HomeworkService {
                 this.modelMapper.map(homeworkServiceModel, Homework.class)
         );
         return this.modelMapper.map(savedHomework, HomeworkServiceModel.class);
+    }
+
+    @Override
+    public HomeworkServiceModel findHomeworkByLowestComments() {
+        Homework homework = this.homeworkRepository.findHomeworkByLowestComments().get(0);
+        HomeworkServiceModel homeworkServiceModel = this.modelMapper.map(homework ,   HomeworkServiceModel.class  );
+        return homeworkServiceModel;
+    }
+
+    @Override
+    public HomeworkServiceModel findHomeworkById(String id) {
+        Homework homework = this.homeworkRepository.findById(id).orElse(null);
+        return this.modelMapper.map(homework, HomeworkServiceModel.class);
     }
 }

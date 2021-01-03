@@ -120,9 +120,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String userProfile() {
-
-
+    public String userProfile(Model model, HttpSession httpSession) {
+        model.addAttribute("userViewModel", this.userService.findSessionUser(httpSession));
         return "profile";
     }
 }

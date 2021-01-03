@@ -9,16 +9,16 @@ public class HomeworkServiceModel extends BaseServiceModel {
     private LocalDateTime addedOn;
     private String gitAddress;
     private UserServiceModel author;
-    private ExerciseServiceModel exerciseServiceModel;
+    private ExerciseServiceModel exercise;
 
     public HomeworkServiceModel() {
     }
 
-    public HomeworkServiceModel(LocalDateTime addedOn, String gitAddress, UserServiceModel author, ExerciseServiceModel exerciseServiceModel) {
+    public HomeworkServiceModel(LocalDateTime addedOn, String gitAddress, UserServiceModel author, ExerciseServiceModel exercise) {
         this.addedOn = addedOn;
         this.gitAddress = gitAddress;
         this.author = author;
-        this.exerciseServiceModel = exerciseServiceModel;
+        this.exercise = exercise;
     }
 
     public LocalDateTime getAddedOn() {
@@ -48,11 +48,11 @@ public class HomeworkServiceModel extends BaseServiceModel {
     }
 
     @NotNull
-    public ExerciseServiceModel getExerciseServiceModel() {
-        return exerciseServiceModel;
+    public ExerciseServiceModel getExercise() {
+        return exercise;
     }
 
-    public void setExerciseServiceModel(ExerciseServiceModel exerciseServiceModel) {
-        this.exerciseServiceModel = exerciseServiceModel;
+    public void setExercise(ExerciseServiceModel exercise) {
+        this.exercise = exercise;
     }
 }

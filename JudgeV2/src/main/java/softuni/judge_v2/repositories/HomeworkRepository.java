@@ -12,4 +12,6 @@ public interface HomeworkRepository extends JpaRepository<Homework, String> {
 
     @Query(value = "SELECT h FROM Homework h ORDER BY h.comments.size ASC" )
     List<Homework> findHomeworkByLowestComments();
+
+    List<Homework> findHomeworkByAuthorId(String authorId);
 }

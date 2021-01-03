@@ -4,15 +4,18 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.judge_v2.constants.GlobalConstants;
-import softuni.judge_v2.models.binding.UserRegisterBindingModel;
 import softuni.judge_v2.models.entity.Role;
 import softuni.judge_v2.models.entity.User;
+import softuni.judge_v2.models.service.HomeworkServiceModel;
 import softuni.judge_v2.models.service.RoleServiceModel;
 import softuni.judge_v2.models.service.UserServiceModel;
+import softuni.judge_v2.models.view.UserViewModel;
 import softuni.judge_v2.repositories.UserRepository;
+import softuni.judge_v2.services.HomeworkService;
 import softuni.judge_v2.services.RoleService;
 import softuni.judge_v2.services.UserService;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,12 +25,14 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final HomeworkService homeworkService;
 
     @Autowired
-    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, RoleService roleService) {
+    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, RoleService roleService, HomeworkService homeworkService) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.homeworkService = homeworkService;
     }
 
     @Override
@@ -78,5 +83,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserViewModel findSessionUser(HttpSession httpSession) {
+        UserServiceModel userServiceModel = (UserServiceModel) httpSession.getAttribute("userServiceModel");
+        UserViewModel userViewModel = this.modelMapper.map(userServiceModel, UserViewModel.class);
 
+        List<HomeworkServiceModel> userHomeworks = this.homeworkService.findHomeworkByAuthorId(userServiceModel.getId());
+        String allSendHomeworks = userHomeworks
+                .stream()
+                .map(h -> h.getExercise().getName())
+                .collect(Collectors.joining(",\n"));
+
+        userViewModel.setAllSendHomeworks(allSendHomeworks);
+        return userViewModel;
+    }
 }

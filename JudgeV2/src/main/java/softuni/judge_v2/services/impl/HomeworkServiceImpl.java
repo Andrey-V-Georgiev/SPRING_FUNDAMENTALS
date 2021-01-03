@@ -14,7 +14,9 @@ import softuni.judge_v2.services.HomeworkService;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HomeworkServiceImpl implements HomeworkService {
@@ -45,7 +47,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         /* Set missing properties */
         homeworkServiceModel.setAddedOn(LocalDateTime.now());
         homeworkServiceModel.setAuthor((UserServiceModel) httpSession.getAttribute("userServiceModel"));
-        homeworkServiceModel.setExerciseServiceModel(exerciseServiceModel);
+        homeworkServiceModel.setExercise(exerciseServiceModel);
         /* Save to DB */
         Homework savedHomework = this.homeworkRepository.saveAndFlush(
                 this.modelMapper.map(homeworkServiceModel, Homework.class)
@@ -64,5 +66,15 @@ public class HomeworkServiceImpl implements HomeworkService {
     public HomeworkServiceModel findHomeworkById(String id) {
         Homework homework = this.homeworkRepository.findById(id).orElse(null);
         return this.modelMapper.map(homework, HomeworkServiceModel.class);
+    }
+
+    @Override
+    public List<HomeworkServiceModel> findHomeworkByAuthorId(String authorId) {
+        List<HomeworkServiceModel> homeworkServiceModels = this.homeworkRepository
+                .findHomeworkByAuthorId(authorId)
+                .stream()
+                .map(h -> this.modelMapper.map(h, HomeworkServiceModel.class))
+                .collect(Collectors.toList());
+        return homeworkServiceModels;
     }
 }

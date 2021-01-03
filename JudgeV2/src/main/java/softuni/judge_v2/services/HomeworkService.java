@@ -5,6 +5,7 @@ import softuni.judge_v2.models.entity.Homework;
 import softuni.judge_v2.models.service.HomeworkServiceModel;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public interface HomeworkService {
     HomeworkServiceModel addHomework(HomeworkAddBindingModel homeworkAddBindingModel, HttpSession httpSession);
@@ -12,4 +13,6 @@ public interface HomeworkService {
     HomeworkServiceModel findHomeworkByLowestComments();
 
     HomeworkServiceModel findHomeworkById(String id);
+
+    List<HomeworkServiceModel> findHomeworkByAuthorId(String authorId);
 }

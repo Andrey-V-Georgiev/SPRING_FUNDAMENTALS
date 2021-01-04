@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="~{/fragments/head}"> </th:block>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-background">
+    <th:block th:include="~{/fragments/nav}"></th:block>
+</nav>
+
+<main class="main">
+    <div class="container-fluid col-md-6">
+
+        <h2 class="text-center text-white">Register User</h2>
+
+        <form  method="POST"
+               class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+            <div class="row">
+
+                <div class="form-group col-md-6 mb-3">
+                    <label for="firstName" class="text-white font-weight-bold">First Name</label>
+                    <input  id="firstName" name="firstName" type="text" min="2" max="20" class="form-control"
+                            placeholder="First name" />
+                    <!-- ERRORS -->
+<!--                    <th:block th:each="e : ${#fields.errors('firstName')}">-->
+<!--                        <small th:text="${e}" class="text-danger col-12 text-center"> </small>-->
+<!--                    </th:block>-->
+                </div>
+
+                <div class="form-group col-md-6 mb-3">
+                    <label for="lastName" class="text-white font-weight-bold">Last Name</label>
+                    <input id="lastName" name="lastName" type="text" min="2" max="20" class="form-control"
+                           placeholder="First name" />
+                    <!-- ERRORS -->
+<!--                    <th:block th:each="e : ${#fields.errors('lastName')}">-->
+<!--                        <small th:text="${e}" class="text-danger col-12 text-center"> </small>-->
+<!--                    </th:block>-->
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6 mb-3">
+                    <label for="username" class="text-white font-weight-bold">Username</label>
+                    <input id="username" name="username" type="text" min="2" max="20" class="form-control"
+                           placeholder="First name" />
+                    <!-- ERRORS -->
+<!--                    <th:block th:each="e : ${#fields.errors('username')}">-->
+<!--                        <small th:text="${e}" class="text-danger col-12 text-center"> </small>-->
+<!--                    </th:block>-->
+                </div>
+
+                <div class="form-group col-md-6 mb-3">
+                    <label for="password" class="text-white font-weight-bold">Password</label>
+                    <input id="password" name="password" type="text" min="2" max="20" class="form-control"
+                           placeholder="Password" />
+                    <!-- ERRORS -->
+<!--                    <th:block th:each="e : ${#fields.errors('password')}">-->
+<!--                        <small th:text="${e}" class="text-danger col-12 text-center"> </small>-->
+<!--                    </th:block>-->
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="text-center text-white font-weight-bold" for="roles">Engine</label>
+                <select id="roles" name="roles" class="form-control" multiple >
+                    <option>
+                        User roles
+                    </option>
+                </select>
+                <!-- ERRORS -->
+<!--                <th:block th:each="e : ${#fields.errors('roles')}">-->
+<!--                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>-->
+<!--                </th:block>-->
+            </div>
+
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <input type="submit" class="btn btn-info btn-lg" value="Register"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</main>
+
+<footer>
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+
+</body>
+</html>

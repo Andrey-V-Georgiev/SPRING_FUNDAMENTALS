@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="collapse navbar-collapse d-flex justify-content-start">
+        <a class="nav-link text-white active h5" th:href="@{/}">Home</a>
+        <a class="nav-link text-white active h5" th:href="@{/user/register}">Register</a>
+        <a class="nav-link text-white active h5" th:href="@{/user/login}">Login</a>
+    </div>
+
+    <div class="collapse navbar-collapse d-flex justify-content-end">
+        <ul class="navbar-nav row">
+            <li class="nav-item col-md-3">
+                <a class="nav-link text-white active h6" th:href="@{/}">Add Brand</a>
+            </li>
+            <li class="nav-item col-md-3">
+                <a class="nav-link text-white active h6" th:href="@{/}">Add Model</a>
+            </li>
+            <li class="nav-item col-md-3">
+                <a class="nav-link text-white active h6" th:href="@{/}">Add Offer</a>
+            </li>
+            <li class="nav-item col-md-3">
+                <a class="nav-link text-white active h6" th:href="@{/}">All Offers</a>
+            </li>
+        </ul>
+    </div>
+
+</html>

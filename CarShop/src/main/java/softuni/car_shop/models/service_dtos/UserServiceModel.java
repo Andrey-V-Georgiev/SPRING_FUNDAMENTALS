@@ -1,45 +1,37 @@
-package softuni.car_shop.models.entities;
+package softuni.car_shop.models.service_dtos;
 
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
+public class UserServiceModel extends BaseServiceModel {
 
     private String username;
     private String firstName;
     private String lastName;
     private String password;
+
     private String imageUrl;
     private boolean active;
+
     private LocalDateTime created;
     private LocalDateTime modified;
-    private UserRole role;
+    private UserRoleServiceModel role;
 
-    public User() {
+    public UserServiceModel() {
     }
 
-    public User(String username, String firstName, String lastName, String password, String imageUrl, boolean active, LocalDateTime created, LocalDateTime modified, UserRole role) {
+    public UserServiceModel(String username, String firstName, String lastName, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.imageUrl = imageUrl;
-        this.active = active;
-        this.created = created;
-        this.modified = modified;
-        this.role = role;
     }
 
+    @NotNull
     @Length(min = 3, max = 20, message = "Username must be between 3 and 20 symbols")
-    @Column(name = "username", nullable = false)
     public String getUsername() {
         return username;
     }
@@ -48,8 +40,8 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
+    @NotNull
     @Length(min = 3, max = 50, message = "First name must be between 3 and 50 symbols")
-    @Column(name = "first_name", nullable = false)
     public String getFirstName() {
         return firstName;
     }
@@ -58,8 +50,8 @@ public class User extends BaseEntity {
         this.firstName = firstName;
     }
 
+    @NotNull
     @Length(min = 3, max = 50, message = "Last name must be between 3 and 50 symbols")
-    @Column(name = "last_name", nullable = false)
     public String getLastName() {
         return lastName;
     }
@@ -68,8 +60,8 @@ public class User extends BaseEntity {
         this.lastName = lastName;
     }
 
+    @NotNull
     @Length(min = 3, max = 20 , message = "Password must be between 3 and 20 symbols")
-    @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;
     }
@@ -78,7 +70,6 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    @Column(name = "image_url")
     public String getImageUrl() {
         return imageUrl;
     }
@@ -87,7 +78,7 @@ public class User extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    @Column(name = "active")
+
     public boolean isActive() {
         return active;
     }
@@ -96,7 +87,7 @@ public class User extends BaseEntity {
         this.active = active;
     }
 
-    @Column(name = "created", nullable = false)
+
     public LocalDateTime getCreated() {
         return created;
     }
@@ -105,7 +96,6 @@ public class User extends BaseEntity {
         this.created = created;
     }
 
-    @Column(name = "modified", nullable = false)
     public LocalDateTime getModified() {
         return modified;
     }
@@ -114,12 +104,11 @@ public class User extends BaseEntity {
         this.modified = modified;
     }
 
-    @ManyToOne
-    public UserRole getRole() {
+    public UserRoleServiceModel getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(UserRoleServiceModel role) {
         this.role = role;
     }
 }

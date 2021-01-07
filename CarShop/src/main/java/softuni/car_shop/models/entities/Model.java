@@ -3,6 +3,7 @@ package softuni.car_shop.models.entities;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
 @Entity
@@ -49,6 +50,7 @@ public class Model extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
+    @Min(1950)
     @Column(name = "start_year", nullable = false)
     public Integer getStartYear() {
         return startYear;
@@ -58,6 +60,7 @@ public class Model extends BaseEntity {
         this.startYear = startYear;
     }
 
+    @Min(1950)
     @Column(name = "end_year", nullable = false)
     public Integer getEndYear() {
         return endYear;

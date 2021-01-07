@@ -10,6 +10,8 @@ import softuni.car_shop.repositories.BrandRepository;
 import softuni.car_shop.services.BrandService;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,7 +28,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public BrandServiceModel addBrand(BrandAddBindingModel brandAddBindingModel) {
-        if(this.brandRepository.findBrandByName(brandAddBindingModel.getName()) != null) {
+        if (this.brandRepository.findBrandByName(brandAddBindingModel.getName()) != null) {
             return null;
         }
         BrandServiceModel brandServiceModel = this.modelMapper.map(brandAddBindingModel, BrandServiceModel.class);
@@ -36,5 +38,22 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = this.modelMapper.map(brandServiceModel, Brand.class);
         Brand savedBrand = this.brandRepository.saveAndFlush(brand);
         return this.modelMapper.map(savedBrand, BrandServiceModel.class);
+    }
+
+    @Override
+    public List<String> findAllBrandsNames() {
+        List<String> brandsNames = this.brandRepository
+                .findAll()
+                .stream()
+                .map(b -> b.getName())
+                .collect(Collectors.toList());
+
+        return brandsNames;
+    }
+
+    @Override
+    public BrandServiceModel findBrandByName(String name) {
+        Brand brandByName = this.brandRepository.findBrandByName(name);
+        return this.modelMapper.map(brandByName, BrandServiceModel.class);
     }
 }

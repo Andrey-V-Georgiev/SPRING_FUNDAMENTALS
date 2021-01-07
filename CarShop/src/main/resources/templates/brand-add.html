@@ -27,7 +27,7 @@
                             <input th:field="*{name}" name="name" id="name"
                                    type="text" class="form-control" placeholder="Brand name" >
                             <th:block th:if="${existingBrand}">
-                                <small th:text="| Existing model |" class="text-danger col-12 text-center"> </small>
+                                <small th:text="| Existing brand |" class="text-danger col-12 text-center"> </small>
                             </th:block>
                             <!-- ERRORS -->
                             <th:block th:each="e : ${#fields.errors('name')}">

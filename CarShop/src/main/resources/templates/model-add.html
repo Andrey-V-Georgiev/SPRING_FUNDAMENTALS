@@ -1,38 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>West Compass</title>
-    <link rel="stylesheet" href="/css/reset-css.css"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/style.css"/>
-</head>
-<body>
-<main class="main">
-    <nav class="navbar navbar-expand-lg navbar-background">
-        <a class="nav-link text-white active h5" href="/">Home</a>
-        <a class="nav-link text-white active h5" href="/users/register">Register Seller</a>
-        <div class="collapse navbar-collapse d-flex justify-content-end">
-           <ul class="navbar-nav row">
-                <li class="nav-item col-md-3">
-                    <a class="nav-link text-white active font-weight-bold" href="/">Add Brand</a>
-                </li>
-                <li class="nav-item col-md-3">
-                    <a class="nav-link text-white active font-weight-bold" href="/">Add Model</a>
-                </li>
-                <li class="nav-item col-md-3">
-                    <a class="nav-link text-white active font-weight-bold" href="/">Add Offer</a>
-                </li>
-                <li class="nav-item col-md-3">
-                    <a class="nav-link text-white active font-weight-bold" href="/">All Offers</a>
-                </li>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-            </ul>
-        </div>
-    </nav>
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-background">
+    <th:block th:include="~{/fragments/nav}"></th:block>
+</nav>
+
+<main class="main">
     <div class="container-fluid">
         <h2 class="text-center text-white">Add Model</h2>
-        <form class="mt-lg-5 w-15 h-50" action="/" method="/">
+
+        <form  th:action="@{/model/add}" method="POST"
+               th:object="${modelAddBindingModel}"  class="mt-lg-5 w-15 h-50">
+
             <div class="row">
                 <div class="col">
                     <div class="form-group">
@@ -40,52 +25,81 @@
                             <label class="text-center text-white font-weight-bold" for="brand">Select Brand
                                 <select id="brand" name="brand" class="form-control">
                                     <option value="">Select Brand</option>
-                                    <option value="">Mercedes</option>
-									<option value="">BMW</option>
+                                    <th:block th:each="model : ${allBrandsNames}">
+                                        <option th:text="${model}" th:value="${model}"></option>
+                                    </th:block>
                                 </select>
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col col-md-12">
                     <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
                             <label class="text-center text-white font-weight-bold" for="name">Enter Model Name
-                                <input type="text" class="form-control" placeholder="Model name" name="name" id="name">
+                                <input type="text" class="form-control" placeholder="Model name"
+                                       th:field="*{name}" name="name" id="name">
+                                <!-- ERRORS -->
+                                <th:block th:if="${existingModel}">
+                                    <small th:text="| Existing model |" class="text-danger col-12 text-center"> </small>
+                                </th:block>
+                                <th:block th:each="e : ${#fields.errors('name')}">
+                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                </th:block>
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col col-md-12">
                     <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
-                            <label class="text-center text-white font-weight-bold" for="name">Enter Start year
-                                <input type="number" class="form-control" placeholder="Start year" name="startYear" id="startYear">
+                            <label class="text-center text-white font-weight-bold" for="startYear">Enter Start year
+                                <input type="number" class="form-control" placeholder="Start year"
+                                       th:field="*{startYear}" name="startYear" id="startYear" min="1950">
+                                <!-- ERRORS -->
+                                <th:block th:each="e : ${#fields.errors('startYear')}">
+                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                </th:block>
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col col-md-12">
                     <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
-                            <label class="text-center text-white font-weight-bold" for="name">Enter End year
-                                <input type="number" class="form-control" placeholder="End year" name="endYear" id="endYear">
+                            <label class="text-center text-white font-weight-bold" for="endYear">Enter End year
+                                <input type="number" class="form-control" placeholder="End year"
+                                       th:field="*{endYear}" name="endYear"  id="endYear" min="1950">
+                                <!-- ERRORS -->
+                                <th:block th:each="e : ${#fields.errors('endYear')}">
+                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                </th:block>
                             </label>
                         </div>
                     </div>
-                </div>            </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col col-md-12">
                     <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
                             <label class="text-center text-white font-weight-bold" for="name">Enter image URL
-                                <input type="text" class="form-control" placeholder="Image url" name="imageUrl" id="imageUrl">
+                                <input type="text" class="form-control" placeholder="Image url"
+                                       th:field="*{imageUrl}"  name="imageUrl" id="imageUrl">
+                                <!-- ERRORS -->
+                                <th:block th:each="e : ${#fields.errors('imageUrl')}">
+                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                </th:block>
                             </label>
                         </div>
                     </div>
@@ -103,5 +117,10 @@
         </form>
     </div>
 </main>
+
+<footer>
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+
 </body>
 </html>

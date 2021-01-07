@@ -32,7 +32,7 @@ public class BrandController {
     }
 
     @GetMapping("/add")
-    public String addModel(Model model) {
+    public String addBrand(Model model) {
         if (!model.containsAttribute("brandAddBindingModel")) {
             model.addAttribute("brandAddBindingModel", new BrandAddBindingModel());
         }
@@ -40,7 +40,7 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public String addModelConfirm(
+    public String addBrandConfirm(
             @Valid @ModelAttribute("brandAddBindingModel") BrandAddBindingModel brandAddBindingModel,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
@@ -51,7 +51,6 @@ public class BrandController {
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "brandAddBindingModel", bindingResult);
             return "redirect:/brand/add";
         }
-        BrandServiceModel brandServiceModel = this.modelMapper.map(brandAddBindingModel, BrandServiceModel.class);
         BrandServiceModel savedBrandServiceModel = this.brandService.addBrand(brandAddBindingModel);
         if(savedBrandServiceModel == null) {
             redirectAttributes.addFlashAttribute("brandAddBindingModel", brandAddBindingModel);

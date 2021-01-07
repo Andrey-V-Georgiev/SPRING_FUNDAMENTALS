@@ -2,6 +2,7 @@ package softuni.car_shop.models.service_dtos;
 
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -48,6 +49,7 @@ public class ModelServiceModel extends BaseServiceModel {
     }
 
     @NotNull
+    @Min(1950)
     public Integer getStartYear() {
         return startYear;
     }
@@ -57,6 +59,7 @@ public class ModelServiceModel extends BaseServiceModel {
     }
 
     @NotNull
+    @Min(1950)
     public Integer getEndYear() {
         return endYear;
     }

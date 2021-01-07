@@ -3,6 +3,7 @@ package softuni.car_shop.models.binding_dtos;
 import org.hibernate.validator.constraints.Length;
 import softuni.car_shop.models.service_dtos.BrandServiceModel;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class ModelAddBindingModel {
@@ -11,12 +12,12 @@ public class ModelAddBindingModel {
     private Integer startYear;
     private Integer endYear;
     private String imageUrl;
-    private BrandServiceModel brand;
+    private String brand;
 
     public ModelAddBindingModel() {
     }
 
-    public ModelAddBindingModel(String name, Integer startYear, Integer endYear, String imageUrl, BrandServiceModel brand) {
+    public ModelAddBindingModel(String name, Integer startYear, Integer endYear, String imageUrl, String brand) {
         this.name = name;
         this.startYear = startYear;
         this.endYear = endYear;
@@ -35,6 +36,7 @@ public class ModelAddBindingModel {
     }
 
     @NotNull
+    @Min(1950)
     public Integer getStartYear() {
         return startYear;
     }
@@ -44,6 +46,7 @@ public class ModelAddBindingModel {
     }
 
     @NotNull
+    @Min(1950)
     public Integer getEndYear() {
         return endYear;
     }
@@ -62,11 +65,11 @@ public class ModelAddBindingModel {
     }
 
     @NotNull
-    public BrandServiceModel getBrand() {
+    public String getBrand() {
         return brand;
     }
 
-    public void setBrand(BrandServiceModel brand) {
+    public void setBrand(String brand) {
         this.brand = brand;
     }
 }

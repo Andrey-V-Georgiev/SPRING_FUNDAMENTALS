@@ -1,31 +1,25 @@
-package softuni.car_shop.models.entities;
+package softuni.car_shop.models.service_dtos;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "brands")
-public class Brand extends BaseEntity {
+public class BrandServiceModel extends BaseServiceModel  {
 
     private String name;
     private LocalDateTime created;
     private LocalDateTime modified;
 
-    public Brand() {
+    public BrandServiceModel() {
     }
 
-    public Brand(String name, LocalDateTime created, LocalDateTime modified) {
+    public BrandServiceModel(String name, LocalDateTime created, LocalDateTime modified) {
         this.name = name;
         this.created = created;
         this.modified = modified;
     }
 
     @Length(min = 2, message = "Name must be at least 2 symbols")
-    @Column(name = "name", unique = true, nullable = false)
     public String getName() {
         return name;
     }
@@ -34,7 +28,6 @@ public class Brand extends BaseEntity {
         this.name = name;
     }
 
-    @Column(name = "created", nullable = false)
     public LocalDateTime getCreated() {
         return created;
     }
@@ -43,7 +36,6 @@ public class Brand extends BaseEntity {
         this.created = created;
     }
 
-    @Column(name = "modified", nullable = false)
     public LocalDateTime getModified() {
         return modified;
     }

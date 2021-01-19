@@ -25,8 +25,8 @@
                             <label class="text-center text-white font-weight-bold" for="brand">Select Brand
                                 <select id="brand" name="brand" class="form-control">
                                     <option value="">Select Brand</option>
-                                    <th:block th:each="model : ${allBrandsNames}">
-                                        <option th:text="${model}" th:value="${model}"></option>
+                                    <th:block th:each="brand : ${allBrandsNames}">
+                                        <option th:text="${brand}" th:value="${brand}"></option>
                                     </th:block>
                                 </select>
                             </label>

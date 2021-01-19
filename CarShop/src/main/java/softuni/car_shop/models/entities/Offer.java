@@ -1,6 +1,7 @@
 package softuni.car_shop.models.entities;
 
 import org.hibernate.validator.constraints.Length;
+import softuni.car_shop.enums.CoupeTypeEnum;
 import softuni.car_shop.enums.EngineTypeEnum;
 import softuni.car_shop.enums.TransmissionTypeEnum;
 
@@ -19,6 +20,7 @@ public class Offer extends BaseEntity {
     private EngineTypeEnum engine;
     private TransmissionTypeEnum transmission;
     private Integer mileage;
+    private CoupeTypeEnum category;
     private BigDecimal price;
     private String description;
     private String imageUrl;
@@ -89,6 +91,16 @@ public class Offer extends BaseEntity {
 
     public void setMileage(Integer mileage) {
         this.mileage = mileage;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
+    public CoupeTypeEnum getCategory() {
+        return category;
+    }
+
+    public void setCategory(CoupeTypeEnum category) {
+        this.category = category;
     }
 
     @DecimalMin(value = "0", message = "Price must be positive number")

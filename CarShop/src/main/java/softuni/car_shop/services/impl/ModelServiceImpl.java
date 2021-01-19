@@ -43,4 +43,16 @@ public class ModelServiceImpl implements ModelService {
         return this.modelMapper.map(savedModel, ModelServiceModel.class);
     }
 
+    @Override
+    public String[] findAllModelNames() {
+
+        String[] modelsNamesAll = this.modelRepository
+                .findAll()
+                .stream()
+                .map(Model::getName)
+                .toArray(String[]::new);
+
+        return modelsNamesAll;
+    }
+
 }

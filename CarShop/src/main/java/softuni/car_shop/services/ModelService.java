@@ -8,4 +8,5 @@ public interface ModelService {
 
     ModelServiceModel addModel(ModelAddBindingModel modelAddBindingModel);
 
+    String[] findAllModelNames();
 }

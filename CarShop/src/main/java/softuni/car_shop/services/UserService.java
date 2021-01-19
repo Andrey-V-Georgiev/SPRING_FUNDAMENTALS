@@ -8,4 +8,6 @@ public interface UserService {
     UserServiceModel registerUser(UserRegisterBindingModel userRegisterBindingModel);
 
     UserServiceModel findUserByUsernameAndPassword(String username, String password);
+
+    String[] findAllUsernames();
 }

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.car_shop.models.binding_dtos.UserLoginBindingModel;
 import softuni.car_shop.models.binding_dtos.UserRegisterBindingModel;
 import softuni.car_shop.models.service_dtos.UserServiceModel;
+import softuni.car_shop.services.AuthService;
 import softuni.car_shop.services.UserService;
 
 import javax.servlet.http.HttpSession;
@@ -26,11 +27,13 @@ public class UserController {
 
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final AuthService authService;
 
     @Autowired
-    public UserController(ModelMapper modelMapper, UserService userService) {
+    public UserController(ModelMapper modelMapper, UserService userService, AuthService authService) {
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.authService = authService;
     }
 
     @GetMapping("/register")
@@ -96,6 +99,9 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout(HttpSession httpSession) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         httpSession.invalidate();
         return "redirect:/";
     }

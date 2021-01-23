@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.car_shop.models.binding_dtos.BrandAddBindingModel;
 import softuni.car_shop.models.service_dtos.BrandServiceModel;
+import softuni.car_shop.services.AuthService;
 import softuni.car_shop.services.BrandService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static softuni.car_shop.constants.GlobalConstants.BINDINGRESULT_PREFIX;
@@ -24,15 +26,20 @@ public class BrandController {
 
     private final ModelMapper modelMapper;
     private final BrandService  brandService;
+    private final AuthService authService;
 
     @Autowired
-    public BrandController(ModelMapper modelMapper, BrandService brandService) {
+    public BrandController(ModelMapper modelMapper, BrandService brandService, AuthService authService) {
         this.modelMapper = modelMapper;
         this.brandService = brandService;
+        this.authService = authService;
     }
 
     @GetMapping("/add")
-    public String addBrand(Model model) {
+    public String addBrand(Model model, HttpSession httpSession) {
+        if(!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         if (!model.containsAttribute("brandAddBindingModel")) {
             model.addAttribute("brandAddBindingModel", new BrandAddBindingModel());
         }
@@ -43,8 +50,12 @@ public class BrandController {
     public String addBrandConfirm(
             @Valid @ModelAttribute("brandAddBindingModel") BrandAddBindingModel brandAddBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            HttpSession httpSession
     ) {
+        if(!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         /* If errors in binding result */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandAddBindingModel", brandAddBindingModel);

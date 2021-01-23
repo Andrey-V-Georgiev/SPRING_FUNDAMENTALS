@@ -1,6 +1,5 @@
 package softuni.car_shop.web.controllers;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +11,12 @@ import softuni.car_shop.enums.EngineTypeEnum;
 import softuni.car_shop.enums.TransmissionTypeEnum;
 import softuni.car_shop.models.binding_dtos.OfferAddBindingModel;
 import softuni.car_shop.models.service_dtos.OfferServiceModel;
+import softuni.car_shop.services.AuthService;
 import softuni.car_shop.services.ModelService;
 import softuni.car_shop.services.OfferService;
 import softuni.car_shop.services.UserService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static softuni.car_shop.constants.GlobalConstants.BINDINGRESULT_PREFIX;
@@ -25,21 +26,24 @@ import static softuni.car_shop.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 @RequestMapping(value = "/offers")
 public class OfferController {
 
-    private final ModelMapper modelMapper;
     private final ModelService modelService;
     private final UserService userService;
     private final OfferService offerService;
+    private final AuthService authService;
 
     @Autowired
-    public OfferController(ModelMapper modelMapper, ModelService modelService, UserService userService, OfferService offerService) {
-        this.modelMapper = modelMapper;
+    public OfferController(ModelService modelService, UserService userService, OfferService offerService, AuthService authService) {
         this.modelService = modelService;
         this.userService = userService;
         this.offerService = offerService;
+        this.authService = authService;
     }
 
     @GetMapping("/add")
-    public String addOffer(Model model) {
+    public String addOffer(Model model, HttpSession httpSession) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         if (!model.containsAttribute("offerAddBindingModel")) {
             model.addAttribute("offerAddBindingModel", new OfferAddBindingModel());
         }
@@ -55,8 +59,12 @@ public class OfferController {
     public String addOfferConfirm(
             @Valid @ModelAttribute("offerAddBindingModel") OfferAddBindingModel offerAddBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            HttpSession httpSession
     ) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         /* If errors in binding result */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
@@ -68,22 +76,35 @@ public class OfferController {
     }
 
     @GetMapping("/all")
-    public String allOffers(Model model) {
-
+    public String allOffers(Model model, HttpSession httpSession) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         model.addAttribute("allOffers", this.offerService.findAllOffers());
         return "all";
     }
 
     @GetMapping("/details/{id}")
-    public String offerDetails(@PathVariable("id") String id, Model model) {
-
+    public String offerDetails(
+            @PathVariable("id") String id,
+            Model model,
+            HttpSession httpSession
+    ) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         model.addAttribute("offer", this.offerService.findOfferById(id));
         return "details";
     }
 
     @PostMapping(value = "/delete/{id}")
-    public String deleteOffer(@PathVariable("id") String id) {
-
+    public String deleteOffer(
+            @PathVariable("id") String id,
+            HttpSession httpSession
+    ) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         this.offerService.deleteOfferById(id);
         return "redirect:/offers/all";
     }

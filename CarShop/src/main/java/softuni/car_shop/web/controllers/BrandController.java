@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import static softuni.car_shop.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 
 @Controller
-@RequestMapping("/brand")
+@RequestMapping("/brands")
 public class BrandController {
 
     private final ModelMapper modelMapper;
@@ -49,14 +49,14 @@ public class BrandController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandAddBindingModel", brandAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "brandAddBindingModel", bindingResult);
-            return "redirect:/brand/add";
+            return "redirect:/brands/add";
         }
         BrandServiceModel savedBrandServiceModel = this.brandService.addBrand(brandAddBindingModel);
         if(savedBrandServiceModel == null) {
             redirectAttributes.addFlashAttribute("brandAddBindingModel", brandAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "brandAddBindingModel", bindingResult);
             redirectAttributes.addFlashAttribute("existingBrand", true);
-            return "redirect:/brand/add";
+            return "redirect:add";
         }
         return "redirect:/home";
     }

@@ -14,6 +14,8 @@ import softuni.car_shop.services.OfferService;
 import softuni.car_shop.services.UserService;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -51,5 +53,31 @@ public class OfferServiceImpl implements OfferService {
         Offer offer = this.modelMapper.map(offerServiceModel, Offer.class);
         Offer savedOffer = this.offerRepository.saveAndFlush(offer);
         return this.modelMapper.map(savedOffer, OfferServiceModel.class);
+    }
+
+    @Override
+    public List<OfferServiceModel> findAllOffers() {
+
+        List<OfferServiceModel> offerServiceModels = this.offerRepository
+                .findAll()
+                .stream()
+                .map(o -> this.modelMapper.map(o, OfferServiceModel.class))
+                .collect(Collectors.toList());
+
+        return offerServiceModels;
+    }
+
+    @Override
+    public OfferServiceModel findOfferById(String id) {
+        OfferServiceModel offerServiceModel = this.offerRepository.findById(id)
+                .map(o -> this.modelMapper.map(o, OfferServiceModel.class))
+                .orElse(null);
+
+        return offerServiceModel;
+    }
+
+    @Override
+    public void deleteOfferById(String id) {
+        this.offerRepository.deleteById(id);
     }
 }

@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import static softuni.car_shop.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final ModelMapper modelMapper;
@@ -51,11 +51,11 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
-            return "redirect:/user/register";
+            return "redirect:/users/register";
         }
         UserServiceModel userServiceModel = this.modelMapper.map(userRegisterBindingModel, UserServiceModel.class);
         this.userService.registerUser(userRegisterBindingModel);
-        return "redirect:/user/login";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/login")
@@ -77,7 +77,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
-            return "redirect:/user/login";
+            return "redirect:/users/login";
         }
         UserServiceModel userServiceModel = this.userService.findUserByUsernameAndPassword(
                 userLoginBindingModel.getUsername(),
@@ -85,7 +85,7 @@ public class UserController {
         );
         if(userServiceModel == null) {
             redirectAttributes.addFlashAttribute("wrongCredentials", true);
-            return "redirect:/user/login";
+            return "redirect:/users/login";
         }
         httpSession.setAttribute("userServiceModel", userServiceModel);
         httpSession.setAttribute("role", userServiceModel.getRole().getRole().name());

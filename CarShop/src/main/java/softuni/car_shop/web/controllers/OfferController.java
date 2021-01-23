@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.car_shop.enums.CoupeTypeEnum;
 import softuni.car_shop.enums.EngineTypeEnum;
@@ -25,7 +22,7 @@ import static softuni.car_shop.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 
 
 @Controller
-@RequestMapping("/offer")
+@RequestMapping(value = "/offers")
 public class OfferController {
 
     private final ModelMapper modelMapper;
@@ -65,9 +62,30 @@ public class OfferController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "offerAddBindingModel", bindingResult);
-            return "redirect:/offer/add";
+            return "redirect:/offers/add";
         }
         OfferServiceModel savedOfferServiceModel = this.offerService.addOffer(offerAddBindingModel);
-        return "redirect:/home";
+        return "redirect:home";
+    }
+
+    @GetMapping("/all")
+    public String allOffers(Model model) {
+
+        model.addAttribute("allOffers", this.offerService.findAllOffers());
+        return "all";
+    }
+
+    @GetMapping("/details/{id}")
+    public String offerDetails(@PathVariable("id") String id, Model model) {
+
+        model.addAttribute("offer", this.offerService.findOfferById(id));
+        return "details";
+    }
+
+    @PostMapping(value = "/delete/{id}")
+    public String deleteOffer(@PathVariable("id") String id) {
+
+        this.offerService.deleteOfferById(id);
+        return "redirect:/offers/all";
     }
 }

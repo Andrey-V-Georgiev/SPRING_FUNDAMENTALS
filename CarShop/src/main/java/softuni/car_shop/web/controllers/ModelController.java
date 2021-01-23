@@ -22,7 +22,7 @@ import java.util.List;
 import static softuni.car_shop.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 
 @Controller
-@RequestMapping("/model")
+@RequestMapping("/models")
 public class ModelController {
 
     private final ModelMapper modelMapper;
@@ -56,14 +56,14 @@ public class ModelController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "modelAddBindingModel", bindingResult);
-            return "redirect:/model/add";
+            return "redirect:/models/add";
         }
         ModelServiceModel savedModelServiceModel = this.modelService.addModel(modelAddBindingModel);
         if(savedModelServiceModel == null) {
             redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "modelAddBindingModel", bindingResult);
             redirectAttributes.addFlashAttribute("existingModel", true);
-            return "redirect:/model/add";
+            return "redirect:/models/add";
         }
         return "redirect:/home";
     }

@@ -1,7 +1,6 @@
 package softuni.car_shop.models.binding_dtos;
 
 import org.hibernate.validator.constraints.Length;
-import softuni.car_shop.models.service_dtos.BrandServiceModel;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

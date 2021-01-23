@@ -52,19 +52,22 @@ public class ModelController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
+        System.out.println();
         /* If errors in binding result */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "modelAddBindingModel", bindingResult);
             return "redirect:/models/add";
         }
-        ModelServiceModel savedModelServiceModel = this.modelService.addModel(modelAddBindingModel);
-        if(savedModelServiceModel == null) {
+        ModelServiceModel modelByName = this.modelService.findModelByName(modelAddBindingModel.getName());
+        if(modelByName != null) {
             redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "modelAddBindingModel", bindingResult);
             redirectAttributes.addFlashAttribute("existingModel", true);
             return "redirect:/models/add";
         }
+        ModelServiceModel savedModelServiceModel = this.modelService.addModel(modelAddBindingModel);
+
         return "redirect:/home";
     }
 }

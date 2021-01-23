@@ -29,9 +29,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public ModelServiceModel addModel(ModelAddBindingModel modelAddBindingModel) {
-        if (this.modelRepository.findModelByName(modelAddBindingModel.getName()) != null) {
-            return null;
-        }
+
         ModelServiceModel modelServiceModel = this.modelMapper.map(modelAddBindingModel, ModelServiceModel.class);
         BrandServiceModel brandByName = this.brandService.findBrandByName(modelAddBindingModel.getBrand());
         modelServiceModel.setBrand(brandByName);

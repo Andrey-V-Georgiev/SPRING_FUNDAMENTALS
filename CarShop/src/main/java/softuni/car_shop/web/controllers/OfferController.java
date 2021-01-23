@@ -57,7 +57,6 @@ public class OfferController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
-        System.out.println();
         /* If errors in binding result */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
@@ -65,7 +64,7 @@ public class OfferController {
             return "redirect:/offers/add";
         }
         OfferServiceModel savedOfferServiceModel = this.offerService.addOffer(offerAddBindingModel);
-        return "redirect:home";
+        return "redirect:/home";
     }
 
     @GetMapping("/all")

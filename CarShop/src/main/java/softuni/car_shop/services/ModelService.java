@@ -9,4 +9,6 @@ public interface ModelService {
     ModelServiceModel addModel(ModelAddBindingModel modelAddBindingModel);
 
     String[] findAllModelNames();
+
+    ModelServiceModel findModelByName(String modelName);
 }

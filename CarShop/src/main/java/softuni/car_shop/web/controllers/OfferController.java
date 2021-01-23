@@ -13,10 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.car_shop.enums.CoupeTypeEnum;
 import softuni.car_shop.enums.EngineTypeEnum;
 import softuni.car_shop.enums.TransmissionTypeEnum;
-import softuni.car_shop.models.binding_dtos.ModelAddBindingModel;
 import softuni.car_shop.models.binding_dtos.OfferAddBindingModel;
-import softuni.car_shop.models.service_dtos.ModelServiceModel;
+import softuni.car_shop.models.service_dtos.OfferServiceModel;
 import softuni.car_shop.services.ModelService;
+import softuni.car_shop.services.OfferService;
 import softuni.car_shop.services.UserService;
 
 import javax.validation.Valid;
@@ -31,12 +31,14 @@ public class OfferController {
     private final ModelMapper modelMapper;
     private final ModelService modelService;
     private final UserService userService;
+    private final OfferService offerService;
 
     @Autowired
-    public OfferController(ModelMapper modelMapper, ModelService modelService, UserService userService) {
+    public OfferController(ModelMapper modelMapper, ModelService modelService, UserService userService, OfferService offerService) {
         this.modelMapper = modelMapper;
         this.modelService = modelService;
         this.userService = userService;
+        this.offerService = offerService;
     }
 
     @GetMapping("/add")
@@ -49,7 +51,6 @@ public class OfferController {
         model.addAttribute("categories", CoupeTypeEnum.values());
         model.addAttribute("transmissions", TransmissionTypeEnum.values());
         model.addAttribute("usernames", this.userService.findAllUsernames());
-
         return "offer-add";
     }
 
@@ -59,21 +60,14 @@ public class OfferController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
-
         System.out.println();
-        // /* If errors in binding result */
-        // if (bindingResult.hasErrors()) {
-        //     redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
-        //     redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "modelAddBindingModel", bindingResult);
-        //     return "redirect:/model/add";
-        // }
-        // ModelServiceModel savedModelServiceModel = this.modelService.addModel(modelAddBindingModel);
-        // if(savedModelServiceModel == null) {
-        //     redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
-        //     redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "modelAddBindingModel", bindingResult);
-        //     redirectAttributes.addFlashAttribute("existingModel", true);
-        //     return "redirect:/model/add";
-        // }
+        /* If errors in binding result */
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
+            redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "offerAddBindingModel", bindingResult);
+            return "redirect:/offer/add";
+        }
+        OfferServiceModel savedOfferServiceModel = this.offerService.addOffer(offerAddBindingModel);
         return "redirect:/home";
     }
 }

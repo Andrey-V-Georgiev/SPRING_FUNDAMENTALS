@@ -67,4 +67,15 @@ public class UserServiceImpl implements UserService {
                 .toArray(String[]::new);
         return usernamesAll;
     }
+
+    @Override
+    public UserServiceModel findUserByUsername(String username) {
+
+        UserServiceModel userServiceModel = this.userRepository
+                .findUserByUsername(username)
+                .map(m -> this.modelMapper.map(m, UserServiceModel.class))
+                .orElse(null);
+
+        return userServiceModel;
+    }
 }

@@ -29,7 +29,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public ModelServiceModel addModel(ModelAddBindingModel modelAddBindingModel) {
-        if(this.modelRepository.findModelByName(modelAddBindingModel.getName()) != null) {
+        if (this.modelRepository.findModelByName(modelAddBindingModel.getName()) != null) {
             return null;
         }
         ModelServiceModel modelServiceModel = this.modelMapper.map(modelAddBindingModel, ModelServiceModel.class);
@@ -53,6 +53,16 @@ public class ModelServiceImpl implements ModelService {
                 .toArray(String[]::new);
 
         return modelsNamesAll;
+    }
+
+    @Override
+    public ModelServiceModel findModelByName(String modelName) {
+
+        ModelServiceModel modelServiceModel = this.modelRepository
+                .findModelByName(modelName)
+                .map(m -> this.modelMapper.map(m, ModelServiceModel.class))
+                .orElse(null);
+        return modelServiceModel;
     }
 
 }

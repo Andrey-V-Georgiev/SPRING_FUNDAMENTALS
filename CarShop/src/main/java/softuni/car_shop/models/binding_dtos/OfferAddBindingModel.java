@@ -57,6 +57,7 @@ public class OfferAddBindingModel {
     }
 
     @NotNull
+    @Length(min = 1, message = "Please select engine")
     public String getEngine() {
         return engine;
     }
@@ -76,6 +77,7 @@ public class OfferAddBindingModel {
     }
 
     @NotNull
+    @Length(min = 1, message = "Please select category")
     public String getCategory() {
         return category;
     }
@@ -95,6 +97,7 @@ public class OfferAddBindingModel {
     }
 
     @NotNull
+    @Length(min = 1, message = "Please select transmission")
     public String getTransmission() {
         return transmission;
     }

@@ -10,4 +10,6 @@ public interface UserService {
     UserServiceModel findUserByUsernameAndPassword(String username, String password);
 
     String[] findAllUsernames();
+
+    UserServiceModel findUserByUsername(String username);
 }

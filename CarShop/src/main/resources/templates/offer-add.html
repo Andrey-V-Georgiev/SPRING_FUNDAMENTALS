@@ -29,10 +29,10 @@
                                     <option th:text="${model}" th:value="${model}"></option>
                                 </th:block>
                             </select>
+                            <th:block th:each="e : ${#fields.errors('model')}">
+                                <small th:text="${e}" class="text-danger"> </small>
+                            </th:block>
                         </label>
-                        <th:block th:each="e : ${#fields.errors('model')}">
-                            <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                        </th:block>
                     </div>
                 </div>
             </div>
@@ -45,10 +45,10 @@
                             <label class="text-center text-white font-weight-bold" for="year">Year
                                 <input type="number" class="form-control" placeholder="Year" min="1950"
                                        th:field="*{year}" th:name="year" id="year">
+                                <th:block th:each="e : ${#fields.errors('year')}">
+                                    <small th:text="${e}" class="text-danger"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('year')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -59,13 +59,13 @@
                                 <select id="engine" name="engine" class="form-control">
                                     <option value="">Select engine</option>
                                     <th:block th:each="engine : ${engines}">
-                                        <option th:text="${engine}" th:value="${engine}"></option>
+                                        <option  th:text="${engine}" th:value="${engine}"></option>
                                     </th:block>
                                 </select>
+                                <th:block th:each="e : ${#fields.errors('engine')}">
+                                    <small th:text="${e}" class="text-danger"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('engine')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -79,10 +79,10 @@
                             <label class="text-center text-white font-weight-bold" for="year">Mileage
                                 <input type="number" class="form-control" placeholder="Mileage"
                                        th:field="*{mileage}" th:name="mileage" id="mileage">
+                                <th:block th:each="e : ${#fields.errors('mileage')}">
+                                    <small th:text="${e}" class="text-danger"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('mileage')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -96,10 +96,10 @@
                                         <option th:text="${category}" th:value="${category}"></option>
                                     </th:block>
                                 </select>
+                                <th:block th:each="e : ${#fields.errors('category')}">
+                                    <small th:text="${e}" class="text-danger"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('category')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -113,10 +113,10 @@
                             <label class="text-center text-white font-weight-bold" for="price">Price
                                 <input type="number" class="form-control" placeholder="Price"
                                        th:field="*{price}" th:name="price" id="price">
+                                <th:block th:each="e : ${#fields.errors('price')}">
+                                    <small th:text="${e}" class="text-danger"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('price')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -130,10 +130,10 @@
                                         <option th:text="${transmission}" th:value="${transmission}"></option>
                                     </th:block>
                                 </select>
+                                <th:block th:each="e : ${#fields.errors('transmission')}">
+                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('transmission')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -148,10 +148,10 @@
                                 <input type="text" class="form-control"
                                        th:field="*{imageUrl}" th:name="imageUrl" id="imageUrl"
                                        placeholder="Picture Url">
+                                <th:block th:each="e : ${#fields.errors('imageUrl')}">
+                                    <small th:text="${e}" class="text-danger"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('imageUrl')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -166,10 +166,10 @@
                                         <option th:text="${username}" th:value="${username}"></option>
                                     </th:block>
                                 </select>
+                                <th:block th:each="e : ${#fields.errors('username')}">
+                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('username')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -182,11 +182,11 @@
                             <label class="text-center text-white font-weight-bold" for="description">Description
                                 <textarea type="textarea" class="form-control" id="description" rows="3"
                                           th:field="*{description}"
-                                          name="description"  placeholder="Description"></textarea>
+                                          name="description" placeholder="Description"></textarea>
+                                <th:block th:each="e : ${#fields.errors('description')}">
+                                    <small th:text="${e}" class="text-danger col-12 text-center"> </small>
+                                </th:block>
                             </label>
-                            <th:block th:each="e : ${#fields.errors('description')}">
-                                <small th:text="${e}" class="text-danger col-12 text-center"> </small>
-                            </th:block>
                         </div>
                     </div>
                 </div>

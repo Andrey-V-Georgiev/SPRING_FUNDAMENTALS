@@ -9,5 +9,4 @@ public class JudgeV2Application {
     public static void main(String[] args) {
         SpringApplication.run(JudgeV2Application.class, args);
     }
-
 }

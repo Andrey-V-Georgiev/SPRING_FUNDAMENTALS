@@ -1,27 +1,22 @@
-package softuni.andreys.models.entity;
+package softuni.andreys.models.service;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
+public class UserServiceModel extends BaseServiceModel {
 
     private String username;
     private String password;
     private String email;
     private BigDecimal budget;
 
-    public User() {
+    public UserServiceModel() {
     }
 
-    public User(String username, String password, String email, BigDecimal budget) {
+    public UserServiceModel(String username, String password, String email, BigDecimal budget) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -29,7 +24,6 @@ public class User extends BaseEntity {
     }
 
     @Length(min = 2, message = "Username must be at least 2 symbols")
-    @Column(name = "username", unique = true)
     public String getUsername() {
         return username;
     }
@@ -39,7 +33,6 @@ public class User extends BaseEntity {
     }
 
     @Length(min = 2, message = "Password must be at least 2 symbols")
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }

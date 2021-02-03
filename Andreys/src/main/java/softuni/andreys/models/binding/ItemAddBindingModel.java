@@ -1,26 +1,24 @@
-package softuni.andreys.models.entity;
+package softuni.andreys.models.binding;
 
 import org.hibernate.validator.constraints.Length;
+import softuni.andreys.enums.CategoryEnums;
 import softuni.andreys.enums.GenderEnums;
 
-import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "items")
-public class Item extends BaseEntity {
+public class ItemAddBindingModel {
 
     private String name;
     private String description;
     private BigDecimal price;
-    private Category category;
+    private CategoryEnums category;
     private GenderEnums gender;
 
-    public Item() {
+    public ItemAddBindingModel() {
     }
 
-    public Item(String name, String description, BigDecimal price, Category category, GenderEnums gender) {
+    public ItemAddBindingModel(String name, String description, BigDecimal price, CategoryEnums category, GenderEnums gender) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -29,7 +27,6 @@ public class Item extends BaseEntity {
     }
 
     @Length(min = 2, message = "Name must be at least 2 symbols")
-    @Column(name = "name", unique = true)
     public String getName() {
         return name;
     }
@@ -39,7 +36,6 @@ public class Item extends BaseEntity {
     }
 
     @Length(min = 3, message = "Description must be at least 3 symbols")
-    @Column(name = "description", columnDefinition = "TEXT")
     public String getDescription() {
         return description;
     }
@@ -57,16 +53,14 @@ public class Item extends BaseEntity {
         this.price = price;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    public Category getCategory() {
+    public CategoryEnums getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryEnums category) {
         this.category = category;
     }
 
-    @Enumerated(EnumType.STRING)
     public GenderEnums getGender() {
         return gender;
     }

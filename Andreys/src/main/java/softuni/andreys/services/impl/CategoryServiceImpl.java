@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.andreys.enums.CategoryEnums;
 import softuni.andreys.models.entity.Category;
+import softuni.andreys.models.service.CategoryServiceModel;
 import softuni.andreys.repositories.CategoryRepository;
 import softuni.andreys.services.CategoryService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -40,5 +43,15 @@ public class CategoryServiceImpl implements CategoryService {
             this.categoryRepository.saveAndFlush(shorts);
             this.categoryRepository.saveAndFlush(jacket);
         }
+    }
+
+    @Override
+    public CategoryServiceModel findCategoryByName(CategoryEnums name) {
+
+        CategoryServiceModel categoryServiceModel = this.categoryRepository
+                .findCategoryByName(name)
+                .map(c -> this.modelMapper.map(c, CategoryServiceModel.class))
+                .orElse(null);
+        return categoryServiceModel;
     }
 }

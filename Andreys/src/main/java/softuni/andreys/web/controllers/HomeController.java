@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 public class HomeController {
@@ -15,9 +17,8 @@ public class HomeController {
     }
 
     /* Home */
-
     @GetMapping("/home")
-    public String home(Model model) {
+    public String home(Model model, HttpSession httpSession) {
         return "home";
     }
 }

@@ -15,6 +15,7 @@ import softuni.andreys.models.binding.UserRegisterBindingModel;
 import softuni.andreys.models.service.UserServiceModel;
 import softuni.andreys.services.UserService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static softuni.andreys.constants.GlobalConstants.BINDINGRESULT_PREFIX;
@@ -83,4 +84,42 @@ public class UserController {
         return "login";
     }
 
+    @PostMapping("/login")
+    public String loginConfirm(
+            @Valid @ModelAttribute("userLoginBindingModel") UserLoginBindingModel userLoginBindingModel,
+            BindingResult bindingResult,
+            HttpSession httpSession,
+            RedirectAttributes redirectAttributes
+    ) {
+        /* IF ERRORS */
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
+            return "redirect:/users/login";
+        }
+
+        /* GET THE USER BY INPUT CREDENTIALS */
+        UserServiceModel userServiceModel = this.userService.findByUsernameAndPassword(
+                userLoginBindingModel.getUsername(),
+                userLoginBindingModel.getPassword()
+        );
+
+        /* IF INCORRECT CREDENTIALS */
+        if (userServiceModel == null) {
+            redirectAttributes.addFlashAttribute("wrongCredentials", true);
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
+            return "redirect:/users/login";
+        }
+
+        /* SET SESSION */
+        httpSession.setAttribute("userServiceModel", userServiceModel);
+        return "redirect:/home";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/";
+    }
 }

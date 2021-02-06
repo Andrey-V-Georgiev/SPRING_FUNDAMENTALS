@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.andreys.models.binding.ItemAddBindingModel;
+import softuni.andreys.models.binding.ItemViewModel;
 import softuni.andreys.models.entity.Item;
 import softuni.andreys.models.service.ItemServiceModel;
 import softuni.andreys.repositories.ItemRepository;
@@ -11,6 +12,8 @@ import softuni.andreys.services.CategoryService;
 import softuni.andreys.services.ItemService;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,4 +48,22 @@ public class ItemServiceImpl implements ItemService {
         Item itemSaved = this.itemRepository.saveAndFlush(this.modelMapper.map(itemServiceModel, Item.class));
         return this.modelMapper.map(itemSaved, ItemServiceModel.class);
     }
+
+    @Override
+    public List<ItemViewModel> findAll() {
+        List<ItemViewModel> itemViewModels = this.itemRepository
+                .findAll()
+                .stream()
+                .map(item -> {
+                    ItemViewModel itemViewModel = this.modelMapper.map(item, ItemViewModel.class);
+                    itemViewModel.setImageUrl(
+                            String.format("/img/%s-%s.jpg", item.getGender(), item.getCategory().getName().name())
+                    );
+                    return itemViewModel;
+                })
+                .collect(Collectors.toList());
+
+
+        return itemViewModels;
+}
 }

@@ -20,7 +20,8 @@
                     <p class="card-text" th:text="${itemViewModel.description}"> </p>
                     <h6 th:text="${itemViewModel.price}"> </h6>
 
-                    <a class="btn btn-danger">Delete</a>
+                    <a th:href="@{/items/delete/{id}(id=${itemViewModel.getId()})}"
+                       class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>

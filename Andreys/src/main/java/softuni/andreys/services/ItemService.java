@@ -14,4 +14,6 @@ public interface ItemService {
     List<ItemViewModel> findAll();
 
     ItemViewModel findItemById(String id);
+
+    void deleteItemById(String id);
 }

@@ -82,4 +82,10 @@ public class ItemController {
         return "details-item";
     }
 
+    /* Delete */
+    @GetMapping("/delete/{id}")
+    public String deleteItem(@PathVariable("id") String id, Model model) {
+        this.itemService.deleteItemById(id);
+        return "redirect:/home";
+    }
 }

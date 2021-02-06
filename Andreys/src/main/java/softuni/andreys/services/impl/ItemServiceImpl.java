@@ -82,4 +82,9 @@ public class ItemServiceImpl implements ItemService {
                 .orElse(null);
         return itemViewModel;
     }
+
+    @Override
+    public void deleteItemById(String id) {
+        this.itemRepository.deleteById(id);
+    }
 }

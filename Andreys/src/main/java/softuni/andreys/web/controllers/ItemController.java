@@ -5,15 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.andreys.enums.CategoryEnums;
 import softuni.andreys.enums.GenderEnums;
 import softuni.andreys.models.binding.ItemAddBindingModel;
 import softuni.andreys.models.service.CategoryServiceModel;
+import softuni.andreys.models.service.ItemServiceModel;
+import softuni.andreys.models.view.ItemViewModel;
 import softuni.andreys.services.CategoryService;
 import softuni.andreys.services.ItemService;
 
@@ -76,6 +75,11 @@ public class ItemController {
     }
 
     /* Details */
-
+    @GetMapping("/details/{id}")
+    public String detailsItem(@PathVariable("id") String id, Model model) {
+        ItemViewModel itemViewModel = this.itemService.findItemById(id);
+        model.addAttribute("itemViewModel", itemViewModel);
+        return "details-item";
+    }
 
 }

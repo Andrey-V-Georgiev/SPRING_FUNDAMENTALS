@@ -1,4 +1,4 @@
-package softuni.andreys.models.binding;
+package softuni.andreys.models.view;
 
 import softuni.andreys.enums.GenderEnums;
 import softuni.andreys.models.service.CategoryServiceModel;

@@ -24,8 +24,11 @@ public class HomeController {
 
     /* Index */
     @GetMapping("/")
-    public String index(Model model, HttpSession httpSession) {
-        if(this.authService.haveSession(httpSession)) {
+    public String index(
+            Model model,
+            HttpSession httpSession
+    ) {
+        if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
         return "index";
@@ -33,11 +36,14 @@ public class HomeController {
 
     /* Home */
     @GetMapping("/home")
-    public String home(Model model, HttpSession httpSession) {
+    public String home(
+            Model model,
+            HttpSession httpSession
+    ) {
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
-        model.addAttribute("allItems",  this.itemService.findAll());
+        model.addAttribute("allItems", this.itemService.findAll());
         return "home";
     }
 }

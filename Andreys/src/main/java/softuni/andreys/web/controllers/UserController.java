@@ -38,8 +38,11 @@ public class UserController {
 
     /* Register */
     @GetMapping("/register")
-    public String register(Model model, HttpSession httpSession) {
-        if(this.authService.haveSession(httpSession)) {
+    public String register(
+            Model model,
+            HttpSession httpSession
+    ) {
+        if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
         if (!model.containsAttribute("userRegisterBindingModel")) {
@@ -48,6 +51,7 @@ public class UserController {
         return "register";
     }
 
+    /* Register confirm */
     @PostMapping("/register")
     public String registerConfirm(
             @Valid @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel,
@@ -55,21 +59,21 @@ public class UserController {
             RedirectAttributes redirectAttributes,
             HttpSession httpSession
     ) {
-        if(this.authService.haveSession(httpSession)) {
+        if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
-        /* IF ERRORS */
+        /* if errors */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
 
-            /* IF CONFIRMED_PASSWORD MISMATCH */
+            /* if confirmed password doesn't match */
             if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
                 redirectAttributes.addFlashAttribute("passwordMismatch", true);
             }
             return "redirect:/users/register";
         }
-        /* IF USER ALREADY EXISTS */
+        /* if user already exists */
         if (this.userService.findUserByUsernameAndEmail(
                 userRegisterBindingModel.getUsername(),
                 userRegisterBindingModel.getEmail()) != null) {
@@ -79,7 +83,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
             return "redirect:/users/register";
         }
-        /* SAVE TO DB */
+        /* save to DB */
         UserServiceModel userServiceModel = this.modelMapper.map(userRegisterBindingModel, UserServiceModel.class);
         this.userService.registerUser(userServiceModel);
         return "redirect:/users/login";
@@ -87,8 +91,11 @@ public class UserController {
 
     /* Login */
     @GetMapping("/login")
-    public String login(Model model, HttpSession httpSession) {
-        if(this.authService.haveSession(httpSession)) {
+    public String login(
+            Model model,
+            HttpSession httpSession
+    ) {
+        if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
         if (!model.containsAttribute("userLoginBindingModel")) {
@@ -97,6 +104,7 @@ public class UserController {
         return "login";
     }
 
+    /* Login confirm */
     @PostMapping("/login")
     public String loginConfirm(
             @Valid @ModelAttribute("userLoginBindingModel") UserLoginBindingModel userLoginBindingModel,
@@ -107,20 +115,20 @@ public class UserController {
         if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
-        /* IF ERRORS */
+        /* if errors */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
             return "redirect:/users/login";
         }
 
-        /* GET THE USER BY INPUT CREDENTIALS */
+        /* find the user */
         UserServiceModel userServiceModel = this.userService.findByUsernameAndPassword(
                 userLoginBindingModel.getUsername(),
                 userLoginBindingModel.getPassword()
         );
 
-        /* IF INCORRECT CREDENTIALS */
+        /* if incorrect credentials */
         if (userServiceModel == null) {
             redirectAttributes.addFlashAttribute("wrongCredentials", true);
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
@@ -128,14 +136,17 @@ public class UserController {
             return "redirect:/users/login";
         }
 
-        /* SET SESSION */
+        /* set session */
         httpSession.setAttribute("userServiceModel", userServiceModel);
         return "redirect:/home";
     }
 
+    /* Logout */
     @GetMapping("/logout")
-    public String logout(HttpSession httpSession) {
-        if(!this.authService.haveSession(httpSession)) {
+    public String logout(
+            HttpSession httpSession
+    ) {
+        if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
         httpSession.invalidate();

@@ -1,6 +1,5 @@
 package softuni.andreys.web.controllers;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import softuni.andreys.enums.GenderEnums;
 import softuni.andreys.models.binding.ItemAddBindingModel;
 import softuni.andreys.models.view.ItemViewModel;
 import softuni.andreys.services.AuthService;
-import softuni.andreys.services.CategoryService;
 import softuni.andreys.services.ItemService;
 
 import javax.servlet.http.HttpSession;
@@ -24,22 +22,21 @@ import static softuni.andreys.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 @RequestMapping("/items")
 public class ItemController {
 
-    private final ModelMapper modelMapper;
     private final ItemService itemService;
-    private final CategoryService categoryService;
     private final AuthService authService;
 
     @Autowired
-    public ItemController(ModelMapper modelMapper, ItemService itemService, CategoryService categoryService, AuthService authService) {
-        this.modelMapper = modelMapper;
+    public ItemController(ItemService itemService, AuthService authService) {
         this.itemService = itemService;
-        this.categoryService = categoryService;
         this.authService = authService;
     }
 
-    /* Add */
+    /* Add item */
     @GetMapping("/add")
-    public String addItem(Model model, HttpSession httpSession) {
+    public String addItem(
+            Model model,
+            HttpSession httpSession
+    ) {
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
@@ -51,6 +48,7 @@ public class ItemController {
         return "add-item";
     }
 
+    /* Add item confirm */
     @PostMapping("/add")
     public String addItemConfirm(
             @Valid @ModelAttribute("itemAddBindingModel") ItemAddBindingModel itemAddBindingModel,
@@ -61,20 +59,20 @@ public class ItemController {
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
-        /* IF ERRORS */
+        /* if errors */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("itemAddBindingModel", itemAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "itemAddBindingModel", bindingResult);
             return "redirect:/items/add";
         }
-        /* IF ITEM ALREADY EXISTS */
+        /* if item already exists */
         if (this.itemService.findItemByName(itemAddBindingModel.getName()) != null) {
             redirectAttributes.addFlashAttribute("itemAlreadyExists", true);
             redirectAttributes.addFlashAttribute("itemAddBindingModel", itemAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "itemAddBindingModel", bindingResult);
             return "redirect:/items/add";
         }
-        /* SAVE TO DB */
+        /* save to DB */
         this.itemService.addItem(itemAddBindingModel);
         return "redirect:/home";
     }

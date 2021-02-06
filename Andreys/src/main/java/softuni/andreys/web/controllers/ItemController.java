@@ -10,16 +10,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.andreys.enums.CategoryEnums;
 import softuni.andreys.enums.GenderEnums;
 import softuni.andreys.models.binding.ItemAddBindingModel;
-import softuni.andreys.models.service.CategoryServiceModel;
-import softuni.andreys.models.service.ItemServiceModel;
 import softuni.andreys.models.view.ItemViewModel;
+import softuni.andreys.services.AuthService;
 import softuni.andreys.services.CategoryService;
 import softuni.andreys.services.ItemService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static softuni.andreys.constants.GlobalConstants.BINDINGRESULT_PREFIX;
 
@@ -30,17 +27,22 @@ public class ItemController {
     private final ModelMapper modelMapper;
     private final ItemService itemService;
     private final CategoryService categoryService;
+    private final AuthService authService;
 
     @Autowired
-    public ItemController(ModelMapper modelMapper, ItemService itemService, CategoryService categoryService) {
+    public ItemController(ModelMapper modelMapper, ItemService itemService, CategoryService categoryService, AuthService authService) {
         this.modelMapper = modelMapper;
         this.itemService = itemService;
         this.categoryService = categoryService;
+        this.authService = authService;
     }
 
     /* Add */
     @GetMapping("/add")
-    public String addItem(Model model) {
+    public String addItem(Model model, HttpSession httpSession) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         if (!model.containsAttribute("itemAddBindingModel")) {
             model.addAttribute("itemAddBindingModel", new ItemAddBindingModel());
         }
@@ -53,9 +55,12 @@ public class ItemController {
     public String addItemConfirm(
             @Valid @ModelAttribute("itemAddBindingModel") ItemAddBindingModel itemAddBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            HttpSession httpSession
     ) {
-        System.out.println();
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         /* IF ERRORS */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("itemAddBindingModel", itemAddBindingModel);
@@ -76,7 +81,14 @@ public class ItemController {
 
     /* Details */
     @GetMapping("/details/{id}")
-    public String detailsItem(@PathVariable("id") String id, Model model) {
+    public String detailsItem(
+            @PathVariable("id") String id,
+            Model model,
+            HttpSession httpSession
+    ) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         ItemViewModel itemViewModel = this.itemService.findItemById(id);
         model.addAttribute("itemViewModel", itemViewModel);
         return "details-item";
@@ -84,7 +96,14 @@ public class ItemController {
 
     /* Delete */
     @GetMapping("/delete/{id}")
-    public String deleteItem(@PathVariable("id") String id, Model model) {
+    public String deleteItem(
+            @PathVariable("id") String id,
+            Model model,
+            HttpSession httpSession
+    ) {
+        if (!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         this.itemService.deleteItemById(id);
         return "redirect:/home";
     }

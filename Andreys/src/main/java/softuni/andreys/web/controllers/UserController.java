@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.andreys.models.binding.UserLoginBindingModel;
 import softuni.andreys.models.binding.UserRegisterBindingModel;
 import softuni.andreys.models.service.UserServiceModel;
+import softuni.andreys.services.AuthService;
 import softuni.andreys.services.UserService;
 
 import javax.servlet.http.HttpSession;
@@ -26,16 +27,21 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final AuthService authService;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper, AuthService authService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.authService = authService;
     }
 
     /* Register */
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(Model model, HttpSession httpSession) {
+        if(this.authService.haveSession(httpSession)) {
+            return "redirect:/home";
+        }
         if (!model.containsAttribute("userRegisterBindingModel")) {
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
         }
@@ -46,8 +52,12 @@ public class UserController {
     public String registerConfirm(
             @Valid @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            HttpSession httpSession
     ) {
+        if(this.authService.haveSession(httpSession)) {
+            return "redirect:/home";
+        }
         /* IF ERRORS */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
@@ -77,7 +87,10 @@ public class UserController {
 
     /* Login */
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(Model model, HttpSession httpSession) {
+        if(this.authService.haveSession(httpSession)) {
+            return "redirect:/home";
+        }
         if (!model.containsAttribute("userLoginBindingModel")) {
             model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
         }
@@ -91,6 +104,9 @@ public class UserController {
             HttpSession httpSession,
             RedirectAttributes redirectAttributes
     ) {
+        if (this.authService.haveSession(httpSession)) {
+            return "redirect:/home";
+        }
         /* IF ERRORS */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
@@ -119,6 +135,9 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout(HttpSession httpSession) {
+        if(!this.authService.haveSession(httpSession)) {
+            return "redirect:/";
+        }
         httpSession.invalidate();
         return "redirect:/";
     }

@@ -10,8 +10,6 @@ import softuni.andreys.repositories.CategoryRepository;
 import softuni.andreys.services.CategoryService;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {

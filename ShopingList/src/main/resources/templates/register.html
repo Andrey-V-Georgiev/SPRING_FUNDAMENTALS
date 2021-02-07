@@ -9,40 +9,74 @@
     <main>
         <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Register</span></h1>
         <hr class="hr-3 w-25 bg-white"/>
-        <form class="mx-auto w-25 bg-blur rounded" method="" action="/" >
+        <form class="mx-auto w-25 bg-blur rounded"
+              th:object="${userRegisterBindingModel}" th:action="@{/users/register}" method="POST">
+
+            <th:block th:if="${userAlreadyExists}">
+                <small class="text-danger" th:text="|User with this username and email already exists!|"> </small>
+            </th:block>
+
             <div class="form-group" >
                 <div  class="label-holder textCol d-flex justify-content-center">
                     <label for="username" class="h4 mb-2 text-white">Username</label>
                 </div>
-                <input type="text" class="form-control" id="username" name="username" />
-                <small class="text-danger">Username error message</small>
+                <input th:field="*{username}"  th:errorClass="bg-danger"
+                       type="text" class="form-control" id="username" name="username" />
+                <!--ERRORS-->
+                <th:block th:each="e : ${#fields.errors('username')}">
+                    <div class="mx-auto text-center">
+                        <small class="text-danger" th:text="${e}"> </small>
+                    </div>
+                </th:block>
             </div>
+
             <div class="form-group">
                 <div class="label-holder text-white textCol d-flex justify-content-center">
                     <label for="email" class="h4 mb-2">Email</label>
                 </div>
-                <input type="email" class="form-control" id="email" name="email" />
+                <input th:field="*{email}"  th:errorClass="bg-danger"
+                       type="email" class="form-control" id="email" name="email" />
 
-                <small class="text-danger">Email error message</small>
+                <!--ERRORS-->
+                <th:block th:each="e : ${#fields.errors('email')}">
+                    <div class="mx-auto text-center">
+                        <small class="text-danger" th:text="${e}"> </small>
+                    </div>
+                </th:block>
             </div>
+
             <div class="form-group">
                 <div class="label-holder text-white textCol d-flex justify-content-center">
                     <label  for="password" class="h4 mb-2" >Password</label>
                 </div>
-                <input type="password" class="form-control" id="password" name="password" />
-                <small class="text-danger">Password error message</small>
+                <input th:field="*{password}"  th:errorClass="bg-danger"
+                       type="password" class="form-control" id="password" name="password" />
+                <!--ERRORS-->
+                <th:block th:each="e : ${#fields.errors('password')}">
+                    <div class="mx-auto text-center">
+                        <small class="text-danger" th:text="${e}"> </small>
+                    </div>
+                </th:block>
             </div>
+
             <div class="form-group">
                 <div class="label-holder text-white textCol d-flex justify-content-center">
                     <label for="confirmPassword" class="h4 mb-2">Confirm Password</label>
                 </div>
-                <input type="password" class="form-control" id="confirmPassword"
-                       name="confirmPassword" />
+                <input th:field="*{confirmPassword}" th:errorClass="bg-danger"
+                        type="password" class="form-control" id="confirmPassword" name="confirmPassword"/>
+                <!--ERRORS-->
+                <th:block th:if="${passwordMismatch}">
+                    <div class="mx-auto text-center">
+                        <small class="text-danger">Confirmed password doesn't match</small>
+                    </div>
+                </th:block>
             </div>
 
             <div class="button-holder d-flex justify-content-center">
                 <button type="submit" class="btn btn-warning  mb-3" value="Register">Register</button>
             </div>
+
         </form>
     </main>
 

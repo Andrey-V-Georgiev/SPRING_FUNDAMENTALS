@@ -1,0 +1,36 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+
+    <nav class="navbar navbar-expand-lg bg-nav rounded">
+        <a class="nav-link text-white active h5" th:href="@{/home}">Shopping List App</a>
+
+        <th:block th:if="${#httpSession.getAttribute('haveSession') == 1}">
+            <a class="nav-link text-white active h5" th:href="@{/products/add}">Add Product</a>
+        </th:block>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+            <th:block th:if="${#httpSession.getAttribute('haveSession') == 0}">
+                <ul class="navbar-nav row">
+                    <li class="nav-item col-md-4">
+                        <a class="nav-link text-white active h5" th:href="@{/users/login}">Login</a>
+                    </li>
+                    <li class="nav-item col-md-4">
+                        <a class="nav-link text-white active h5" th:href="@{/users/register}">Register</a>
+                    </li>
+                </ul>
+            </th:block>
+            <th:block th:if="${#httpSession.getAttribute('haveSession') == 1}">
+                <ul class="navbar-nav row">
+                    <li class="nav-item col-md-4">
+                        <a class="nav-link text-white active h5" th:href="@{/users/logaut}">Logout</a>
+                    </li>
+                </ul>
+            </th:block>
+        </div>
+    </nav>
+
+</th:block>

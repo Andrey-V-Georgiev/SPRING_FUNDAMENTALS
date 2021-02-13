@@ -1,25 +1,24 @@
-package softuni.shopping_list.models.service;
+package softuni.shopping_list.models.view;
 
-import org.hibernate.validator.constraints.Length;
+import softuni.shopping_list.models.service.CategoryServiceModel;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class ProductServiceModel  extends BaseServiceModel {
+public class ProductViewModel {
 
+    private String id;
     private String name;
     private String description;
     private BigDecimal price;
     private LocalDateTime neededBefore;
     private CategoryServiceModel category;
 
-    public ProductServiceModel() {
+    public ProductViewModel() {
     }
 
-    public ProductServiceModel(String name, String description, BigDecimal price, LocalDateTime neededBefore, CategoryServiceModel category) {
+    public ProductViewModel(String id, String name, String description, BigDecimal price, LocalDateTime neededBefore, CategoryServiceModel category) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -27,7 +26,14 @@ public class ProductServiceModel  extends BaseServiceModel {
         this.category = category;
     }
 
-    @Length(min = 3, max = 20, message = "Name must be between 3 an 20 symbols")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -36,7 +42,6 @@ public class ProductServiceModel  extends BaseServiceModel {
         this.name = name;
     }
 
-    @Length(min = 5, message = "Description must be at least 5 symbols")
     public String getDescription() {
         return description;
     }
@@ -45,7 +50,6 @@ public class ProductServiceModel  extends BaseServiceModel {
         this.description = description;
     }
 
-    @DecimalMin(value = "0", message = "Price must be positive number")
     public BigDecimal getPrice() {
         return price;
     }
@@ -54,7 +58,6 @@ public class ProductServiceModel  extends BaseServiceModel {
         this.price = price;
     }
 
-    @FutureOrPresent(message = "Date cannot be in the past")
     public LocalDateTime getNeededBefore() {
         return neededBefore;
     }
@@ -63,7 +66,6 @@ public class ProductServiceModel  extends BaseServiceModel {
         this.neededBefore = neededBefore;
     }
 
-    @NotNull
     public CategoryServiceModel getCategory() {
         return category;
     }

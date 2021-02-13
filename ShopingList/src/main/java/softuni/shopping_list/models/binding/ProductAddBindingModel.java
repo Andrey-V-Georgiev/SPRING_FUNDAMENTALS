@@ -1,27 +1,24 @@
 package softuni.shopping_list.models.binding;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.Nullable;
 import softuni.shopping_list.enumerations.CategoryEnum;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class ProductAddBindingModel {
 
     private String name;
     private String description;
     private BigDecimal price;
-    private LocalDateTime neededBefore;
+    private String neededBefore;
     private CategoryEnum category;
 
     public ProductAddBindingModel() {
     }
 
-    public ProductAddBindingModel(String name, String description, BigDecimal price, LocalDateTime neededBefore, CategoryEnum category) {
+    public ProductAddBindingModel(String name, String description, BigDecimal price, String neededBefore, CategoryEnum category) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -47,6 +44,7 @@ public class ProductAddBindingModel {
         this.description = description;
     }
 
+    @NotNull(message = "Must enter price")
     @DecimalMin(value = "0", message = "Price must be positive number")
     public BigDecimal getPrice() {
         return price;
@@ -56,16 +54,16 @@ public class ProductAddBindingModel {
         this.price = price;
     }
 
-    @FutureOrPresent(message = "Date cannot be in the past")
-    public LocalDateTime getNeededBefore() {
+    @Length(min = 16, message = "Please enter date and time in valid format")
+    public String getNeededBefore() {
         return neededBefore;
     }
 
-    public void setNeededBefore(LocalDateTime neededBefore) {
+    public void setNeededBefore(String neededBefore) {
         this.neededBefore = neededBefore;
     }
 
-    @NotNull
+    @NotNull(message = "Must enter category")
     public CategoryEnum getCategory() {
         return category;
     }

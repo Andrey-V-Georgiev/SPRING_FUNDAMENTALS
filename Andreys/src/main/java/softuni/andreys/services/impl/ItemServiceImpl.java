@@ -13,7 +13,6 @@ import softuni.andreys.services.ItemService;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

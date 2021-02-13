@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 
 public class ItemViewModel {
 
-    private String id;    private String name;
+    private String id;
+    private String name;
     private String description;
     private BigDecimal price;
     private CategoryServiceModel category;

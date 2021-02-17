@@ -29,23 +29,28 @@ public class ProductController {
         this.productService = productService;
     }
 
-    /* Add product */
+    /* ------ Add product ------ */
     @GetMapping("/add")
     public String addProduct(
             Model model,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
+        /* Attach the binding model */
         if (!model.containsAttribute("productAddBindingModel")) {
             model.addAttribute("productAddBindingModel", new ProductAddBindingModel());
         }
+        /* Attach additional fields */
+        model.addAttribute("productAlreadyExists");
         model.addAttribute("allCategories", CategoryEnum.values());
+
         return "product-add";
     }
 
-    /* Add product confirm */
+    /* ------ Add product confirm ------ */
     @PostMapping("/add")
     public String addProductConfirm(
             @Valid @ModelAttribute("productAddBindingModel") ProductAddBindingModel productAddBindingModel,
@@ -53,34 +58,36 @@ public class ProductController {
             RedirectAttributes redirectAttributes,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
-        /* if errors */
+        /* If errors */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("productAddBindingModel", productAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "productAddBindingModel", bindingResult);
             return "redirect:/products/add";
         }
-        /* if product already exists */
+        /* If already exists */
         if (this.productService.findProductByName(productAddBindingModel.getName()) != null) {
             redirectAttributes.addFlashAttribute("productAlreadyExists", true);
             redirectAttributes.addFlashAttribute("productAddBindingModel", productAddBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "productAddBindingModel", bindingResult);
             return "redirect:/products/add";
         }
-        /* save to DB */
+        /* Save to DB */
         this.productService.addProduct(productAddBindingModel);
         return "redirect:/home";
     }
 
-    /* Delete */
+    /* ------Delete ------ */
     @GetMapping("/delete/{id}")
     public String deleteProduct(
             @PathVariable("id") String id,
             Model model,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
@@ -88,12 +95,13 @@ public class ProductController {
         return "redirect:/home";
     }
 
-    /* Delete */
+    /* ------ Delete all ------ */
     @GetMapping("/delete/all")
     public String deleteAllProducts(
             Model model,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }

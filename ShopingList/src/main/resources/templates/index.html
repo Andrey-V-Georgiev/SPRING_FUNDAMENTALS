@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:include="~{/fragments/head}"> </th:block>
+<!-- HEAD -->
+<th:block th:include="~{/fragments/head}"></th:block>
 <body>
     <header>
-        <th:block th:include="~{/fragments/nav}"> </th:block>
+        <!-- NAV -->
+        <th:block th:include="~{/fragments/nav}"></th:block>
     </header>
         <main>
             <div class="container bg-blur rounded mt-5 ">
@@ -20,6 +22,8 @@
                 </h3>
             </div>
         </main>
-    <th:block th:include="~{/fragments/footer}"> </th:block>
+
+    <!-- FOOTER -->
+    <th:block th:include="~{/fragments/footer}"></th:block>
 </body>
 </html>

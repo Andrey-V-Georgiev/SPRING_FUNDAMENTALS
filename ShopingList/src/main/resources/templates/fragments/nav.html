@@ -1,8 +1,10 @@
-<th:block xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
     <nav class="navbar navbar-expand-lg bg-nav rounded">
         <a class="nav-link text-white active h5" th:href="@{/home}">Shopping List App</a>
 
+        <!-- HAVE SESSION-->
         <th:block th:if="${#httpSession.getAttribute('haveSession') == 1}">
             <a class="nav-link text-white active h5" th:href="@{/products/add}">Add Product</a>
         </th:block>
@@ -13,6 +15,8 @@
         </button>
 
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+
+            <!-- NO SESSION-->
             <th:block th:if="${#httpSession.getAttribute('haveSession') == 0}">
                 <ul class="navbar-nav row">
                     <li class="nav-item col-md-4">
@@ -23,6 +27,8 @@
                     </li>
                 </ul>
             </th:block>
+
+            <!-- HAVE SESSION-->
             <th:block th:if="${#httpSession.getAttribute('haveSession') == 1}">
                 <ul class="navbar-nav row">
                     <li class="nav-item col-md-4">
@@ -30,7 +36,8 @@
                     </li>
                 </ul>
             </th:block>
+
         </div>
     </nav>
 
-</th:block>
+</html>

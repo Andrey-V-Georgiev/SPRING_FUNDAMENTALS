@@ -5,9 +5,8 @@ import softuni.shopping_list.models.service.CategoryServiceModel;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class ProductViewModel {
+public class ProductViewModel extends BaseViewModel {
 
-    private String id;
     private String name;
     private String description;
     private BigDecimal price;
@@ -17,21 +16,12 @@ public class ProductViewModel {
     public ProductViewModel() {
     }
 
-    public ProductViewModel(String id, String name, String description, BigDecimal price, LocalDateTime neededBefore, CategoryServiceModel category) {
-        this.id = id;
+    public ProductViewModel(String name, String description, BigDecimal price, LocalDateTime neededBefore, CategoryServiceModel category) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.neededBefore = neededBefore;
         this.category = category;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

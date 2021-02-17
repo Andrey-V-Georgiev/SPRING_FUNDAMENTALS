@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<!-- HEAD -->
 <th:block th:include="~{/fragments/head}"></th:block>
 <body>
 <header>
+    <!-- NAV -->
     <th:block th:include="~{/fragments/nav}"></th:block>
 </header>
 <main>
@@ -13,7 +15,7 @@
     <form class="mx-auto w-25 bg-blur rounded"
           th:object="${productAddBindingModel}" th:action="@{/products/add}" method="POST">
 
-
+        <!-- IF RECORD ALREADY EXISTS -->
         <th:block th:if="${productAlreadyExists}">
             <small class="text-danger" th:text="|Product already exists!|"> </small>
         </th:block>
@@ -78,7 +80,7 @@
             <div class="text-white label-holder d-flex justify-content-center">
                 <label for="category" class="h4 mb-2">Category</label>
             </div>
-            <select th:errorClass="bg-danger" class="browser-default custom-select" id="category" name="category">
+            <select th:field="*{category}" th:errorClass="bg-danger" class="browser-default custom-select" id="category" name="category">
                 <option value="">Select category</option>
                 <th:block th:each="category : ${allCategories}">
                     <option th:text="${category}" th:value="${category}"></option>
@@ -98,6 +100,7 @@
     </form>
 </main>
 
+<!-- FOOTER -->
 <th:block th:include="~{/fragments/footer}"></th:block>
 </body>
 </html>

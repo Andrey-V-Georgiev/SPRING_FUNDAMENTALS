@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<!-- HEAD -->
 <th:block th:include="~{/fragments/head}"> </th:block>
 <body>
     <header>
+        <!-- NAV -->
         <th:block th:include="~{/fragments/nav}"> </th:block>
     </header>
     <main>
@@ -13,6 +15,7 @@
         <form class="mx-auto w-25 bg-blur"
               th:object="${userLoginBindingModel}" th:action="@{/users/login}" method="POST">
 
+            <!-- IF WRONG CREDENTIALS -->
             <th:block th:if="${wrongCredentials}">
                 <small class="text-danger" th:text="|Wrong credentials|"> </small>
             </th:block>
@@ -51,6 +54,8 @@
 
         </form>
     </main>
+
+    <!-- FOOTER -->
     <th:block th:include="~{/fragments/footer}"> </th:block>
 </body>
 </html>

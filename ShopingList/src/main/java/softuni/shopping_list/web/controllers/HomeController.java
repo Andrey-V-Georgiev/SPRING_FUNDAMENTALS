@@ -23,32 +23,36 @@ public class HomeController {
         this.productService = productService;
     }
 
-    /* Index */
+    /* ------ Index ------ */
     @GetMapping("/")
     public String index(
             Model model,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
         return "index";
     }
 
-    /* Home */
+    /* ------ Home ------ */
     @GetMapping("/home")
     public String home(
             Model model,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }
-        model.addAttribute("allProductsDrink", this.productService.findProductsByCategory(CategoryEnum.DRINK));
-        model.addAttribute("allProductsFood", this.productService.findProductsByCategory(CategoryEnum.FOOD));
-        model.addAttribute("allProductsHousehold", this.productService.findProductsByCategory(CategoryEnum.HOUSEHOLD));
-        model.addAttribute("allProductsOther", this.productService.findProductsByCategory(CategoryEnum.OTHER));
-        model.addAttribute("allProductsPrice", this.productService.findPriceForAllProducts());
+        /* Attach additional fields */
+        model.addAttribute("foods", this.productService.findProductsByCategory(CategoryEnum.FOOD));
+        model.addAttribute("drinks", this.productService.findProductsByCategory(CategoryEnum.DRINK));
+        model.addAttribute("households", this.productService.findProductsByCategory(CategoryEnum.HOUSEHOLD));
+        model.addAttribute("others", this.productService.findProductsByCategory(CategoryEnum.OTHER));
+        model.addAttribute("totalPrice", this.productService.findTotalPrice());
+
         return "home";
     }
 }

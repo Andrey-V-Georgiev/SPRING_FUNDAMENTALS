@@ -9,13 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Component
-public class NavMenuInterceptor implements HandlerInterceptor {
+public class NavFragmentInterceptor implements HandlerInterceptor {
 
     @Autowired
     private HttpSession httpSession;
 
+    /* ------ Rock solid ------ */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler
+    ) {
         if (httpSession.getAttribute("userServiceModel") == null) {
             httpSession.setAttribute("haveSession", 0);
         } else {

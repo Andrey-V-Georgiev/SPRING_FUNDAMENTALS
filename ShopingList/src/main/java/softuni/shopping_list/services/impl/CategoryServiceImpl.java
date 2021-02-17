@@ -15,17 +15,19 @@ import java.util.Arrays;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
-        this.categoryRepository = categoryRepository;
+    public CategoryServiceImpl(ModelMapper modelMapper, CategoryRepository categoryRepository) {
         this.modelMapper = modelMapper;
+        this.categoryRepository = categoryRepository;
     }
 
+    /* ------ Seed  ------ */
     @PostConstruct
     public void seedCategories() {
+
         if (categoryRepository.count() == 0) {
             Arrays.stream(CategoryEnum.values()).forEach(categoryName -> {
                 Category category = new Category(categoryName, String.format("Description for %s", categoryName));
@@ -34,6 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    /* ------ Find by name ------ */
     @Override
     public CategoryServiceModel findCategoryByName(CategoryEnum name) {
 
@@ -41,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .findCategoryByName(name)
                 .map(c -> this.modelMapper.map(c, CategoryServiceModel.class))
                 .orElse(null);
+
         return categoryServiceModel;
     }
 }

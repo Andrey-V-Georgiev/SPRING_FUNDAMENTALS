@@ -20,15 +20,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public UserServiceModel findByUsernameAndPassword(String username, String password) {
-        UserServiceModel userServiceModel = this.userRepository
-                .findByUsernameAndPassword(username, password)
-                .map(u -> this.modelMapper.map(u, UserServiceModel.class))
-                .orElse(null);
-        return userServiceModel;
-    }
-
+    /* ------ Find by username and email ------ */
     @Override
     public UserServiceModel findUserByUsernameAndEmail(String username, String email) {
         UserServiceModel userServiceModel = this.userRepository
@@ -38,6 +30,19 @@ public class UserServiceImpl implements UserService {
         return userServiceModel;
     }
 
+    /* ------ Find by username and password ------ */
+    @Override
+    public UserServiceModel findByUsernameAndPassword(String username, String password) {
+
+        UserServiceModel userServiceModel = this.userRepository
+                .findByUsernameAndPassword(username, password)
+                .map(u -> this.modelMapper.map(u, UserServiceModel.class))
+                .orElse(null);
+
+        return userServiceModel;
+    }
+
+    /* ------ Register user ------ */
     @Override
     public UserServiceModel registerUser(UserServiceModel userServiceModel) {
         User userUnsaved = this.modelMapper.map(userServiceModel, User.class);

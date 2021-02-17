@@ -4,20 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import softuni.shopping_list.web.interceptors.NavMenuInterceptor;
+import softuni.shopping_list.web.interceptors.NavFragmentInterceptor;
 
 @Configuration
-public class AppWebConfig implements WebMvcConfigurer {
+public class ApplicationWebConfiguration implements WebMvcConfigurer {
 
-    private final NavMenuInterceptor navMenuInterceptor;
+    private final NavFragmentInterceptor navFragmentInterceptor;
 
     @Autowired
-    public AppWebConfig(NavMenuInterceptor navMenuInterceptor) {
-        this.navMenuInterceptor = navMenuInterceptor;
+    public ApplicationWebConfiguration(NavFragmentInterceptor navFragmentInterceptor) {
+        this.navFragmentInterceptor = navFragmentInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(navMenuInterceptor);
+        registry.addInterceptor(navFragmentInterceptor);
     }
 }

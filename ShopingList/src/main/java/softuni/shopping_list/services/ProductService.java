@@ -12,14 +12,14 @@ public interface ProductService {
 
     ProductServiceModel findProductByName(String name);
 
-    ProductServiceModel addProduct(ProductAddBindingModel productAddBindingModel);
-
     List<ProductViewModel> findProductsByCategory(CategoryEnum categoryName);
+
+    BigDecimal findTotalPrice();
+
+    ProductServiceModel addProduct(ProductAddBindingModel productAddBindingModel);
 
     void deleteItemById(String id);
 
     void deleteAll();
-
-    BigDecimal findPriceForAllProducts();
 
 }

@@ -34,28 +34,45 @@ public class ProductServiceImpl implements ProductService {
         this.categoryService = categoryService;
     }
 
+    /* ------ Find by name ------ */
     @Override
     public ProductServiceModel findProductByName(String name) {
+
         ProductServiceModel productServiceModel = this.productRepository
                 .findProductByName(name)
                 .map(p -> this.modelMapper.map(p, ProductServiceModel.class))
                 .orElse(null);
+
         return productServiceModel;
     }
 
+    /* ------ Find by category ------ */
+    @Override
+    public List<ProductViewModel> findProductsByCategory(CategoryEnum categoryName) {
+
+        List<ProductViewModel> productViewModels = this.productRepository
+                .findProductsByCategory_Name(categoryName)
+                .stream()
+                .map(p -> this.modelMapper.map(p, ProductViewModel.class))
+                .collect(Collectors.toList());
+
+        return productViewModels;
+    }
+
+    /* ------ Find total price ------ */
+    @Override
+    public BigDecimal findTotalPrice() {
+        BigDecimal priceForAllProducts = this.productRepository.findPriceForAllProducts();
+        return priceForAllProducts;
+    }
+
+    /* ------ Add product ------ */
     @Override
     public ProductServiceModel addProduct(ProductAddBindingModel productAddBindingModel) {
+
         ProductServiceModel productServiceModel = this.modelMapper.map(
                 productAddBindingModel,
                 ProductServiceModel.class
-        );
-        /* Parse LocalDateTime from String */
-        LocalDateTime neededBefore = LocalDateTime.parse(
-                productAddBindingModel.getNeededBefore(),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
-        );
-        productServiceModel.setNeededBefore(
-                neededBefore
         );
         /* Set category */
         productServiceModel.setCategory(this.categoryService.findCategoryByName(productAddBindingModel.getCategory()));
@@ -67,32 +84,16 @@ public class ProductServiceImpl implements ProductService {
         return this.modelMapper.map(productSaved, ProductServiceModel.class);
     }
 
-    @Override
-    public List<ProductViewModel> findProductsByCategory(CategoryEnum categoryName) {
-        CategoryServiceModel categoryByName = this.categoryService.findCategoryByName(categoryName);
-        List<ProductViewModel> productViewModels = this.productRepository
-                .findProductsByCategory(this.modelMapper.map(categoryByName, Category.class))
-                .stream()
-                .map(p -> this.modelMapper.map(p, ProductViewModel.class))
-                .collect(Collectors.toList());
-        return productViewModels;
-    }
-
+    /* ------ Delete ------ */
     @Override
     public void deleteItemById(String id) {
         this.productRepository.deleteById(id);
     }
 
+    /* ------ Delete all ------ */
     @Override
     public void deleteAll() {
         this.productRepository.deleteAll();
-    }
-
-    @Override
-    public BigDecimal findPriceForAllProducts() {
-
-        BigDecimal priceForAllProducts = this.productRepository.findPriceForAllProducts();
-        return priceForAllProducts;
     }
 
 }

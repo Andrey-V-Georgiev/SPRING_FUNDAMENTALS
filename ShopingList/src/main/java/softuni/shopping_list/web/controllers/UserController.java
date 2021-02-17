@@ -25,9 +25,9 @@ import static softuni.shopping_list.constants.GlobalConstants.BINDINGRESULT_PREF
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
-    private final ModelMapper modelMapper;
     private final AuthService authService;
+    private final ModelMapper modelMapper;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService, ModelMapper modelMapper, AuthService authService) {
@@ -36,22 +36,27 @@ public class UserController {
         this.authService = authService;
     }
 
-    /* Register */
+    /* ------ Register ------ */
     @GetMapping("/register")
     public String register(
             Model model,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
+        /* Attach the binding model */
         if (!model.containsAttribute("userRegisterBindingModel")) {
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
         }
+        /* Attach additional fields */
+        model.addAttribute("userAlreadyExists");
+        model.addAttribute("passwordMismatch");
         return "register";
     }
 
-    /* Register confirm */
+    /* ------ Register confirm ------ */
     @PostMapping("/register")
     public String registerConfirm(
             @Valid @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel,
@@ -59,54 +64,61 @@ public class UserController {
             RedirectAttributes redirectAttributes,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
-        /* if errors */
+        /* If errors */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
             return "redirect:/users/register";
         }
-        /* if confirmed password doesn't match */
+        /* If confirmed password doesn't match */
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             redirectAttributes.addFlashAttribute("passwordMismatch", true);
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
             return "redirect:/users/register";
         }
-        /* if user already exists */
-        if (this.userService.findUserByUsernameAndEmail(
+        /* Find by username and email */
+        UserServiceModel userByUsernameAndEmail = this.userService.findUserByUsernameAndEmail(
                 userRegisterBindingModel.getUsername(),
-                userRegisterBindingModel.getEmail()) != null) {
-
+                userRegisterBindingModel.getEmail()
+        );
+        /* If user already exists */
+        if (userByUsernameAndEmail != null) {
             redirectAttributes.addFlashAttribute("userAlreadyExists", true);
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userRegisterBindingModel", bindingResult);
             return "redirect:/users/register";
         }
-        /* save to DB */
+        /* Save to DB */
         UserServiceModel userServiceModel = this.modelMapper.map(userRegisterBindingModel, UserServiceModel.class);
         this.userService.registerUser(userServiceModel);
         return "redirect:/users/login";
     }
 
-    /* Login */
+    /* ------ Login ------ */
     @GetMapping("/login")
     public String login(
             Model model,
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
+        /* Attach the binding model */
         if (!model.containsAttribute("userLoginBindingModel")) {
             model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
         }
+        /* Attach additional fields */
+        model.addAttribute("wrongCredentials");
         return "login";
     }
 
-    /* Login confirm */
+    /* ------ Login confirm ------ */
     @PostMapping("/login")
     public String loginConfirm(
             @Valid @ModelAttribute("userLoginBindingModel") UserLoginBindingModel userLoginBindingModel,
@@ -114,23 +126,24 @@ public class UserController {
             HttpSession httpSession,
             RedirectAttributes redirectAttributes
     ) {
+        /* Validate authorization */
         if (this.authService.haveSession(httpSession)) {
             return "redirect:/home";
         }
-        /* if errors */
+        /* If errors */
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
             redirectAttributes.addFlashAttribute(BINDINGRESULT_PREFIX + "userLoginBindingModel", bindingResult);
             return "redirect:/users/login";
         }
 
-        /* find the user */
+        /* Find by username and password */
         UserServiceModel userServiceModel = this.userService.findByUsernameAndPassword(
                 userLoginBindingModel.getUsername(),
                 userLoginBindingModel.getPassword()
         );
 
-        /* if incorrect credentials */
+        /* If incorrect credentials */
         if (userServiceModel == null) {
             redirectAttributes.addFlashAttribute("wrongCredentials", true);
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
@@ -138,16 +151,17 @@ public class UserController {
             return "redirect:/users/login";
         }
 
-        /* set session */
+        /* Set session */
         httpSession.setAttribute("userServiceModel", userServiceModel);
         return "redirect:/home";
     }
 
-    /* Logout */
+    /* ------ Logout ------ */
     @GetMapping("/logout")
     public String logout(
             HttpSession httpSession
     ) {
+        /* Validate authorization */
         if (!this.authService.haveSession(httpSession)) {
             return "redirect:/";
         }

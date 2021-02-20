@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import softuni.shopping_list.enumerations.CategoryEnum;
-import softuni.shopping_list.models.entity.Category;
 import softuni.shopping_list.models.entity.Product;
 
 import java.math.BigDecimal;

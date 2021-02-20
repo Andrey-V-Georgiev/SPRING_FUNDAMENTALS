@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- HAVE SESSION-->
+<th:block th:if="${session.userServiceModel != null}">
+
+</th:block>
+
+<!-- NO SESSION-->
+<th:block th:if="${session.userServiceModel == null}">
+
+</th:block>
+
+</html>

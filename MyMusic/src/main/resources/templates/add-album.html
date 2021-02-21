@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+<th:block th:include="~{/fragments/head}"></th:block>
+
+<body>
+
+<header>
+    <!-- NAV -->
+    <th:block th:include="~{/fragments/nav}"></th:block>
+</header>
+
+<main class="p-5 bg-blur text-center my-main">
+    <h1 class="text-light border-bottom">Add Album</h1>
+    <div class="d-flex justify-content-center">
+
+        <form th:object="${albumAddBindingModel}" th:action="@{/albums/add}" method="POST"
+              class="text-light">
+
+            <!-- IF ALBUM ALREADY EXISTS -->
+            <th:block th:if="${albumAlreadyExists}">
+                <small class="text-danger" th:text="|Album already exists!|"> </small>
+            </th:block>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="name">Album name</label>
+                    <input th:field="*{name}" th:errorClass="bg-danger"
+                            name="name" id="name" type="text" class="form-control" placeholder="Album name">
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('name')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+
+                <div class="col">
+                    <label for="imgUrl">Image Url</label>
+                    <input th:field="*{imgUrl}" th:errorClass="bg-danger"
+                            name="imgUrl" id="imgUrl" type="text" class="form-control" placeholder="Image Url">
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('imgUrl')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="price">Price</label>
+                    <input th:field="*{price}" th:errorClass="bg-danger"
+                            name="price" id="price" type="number" class="form-control" placeholder="Price">
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('price')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+
+                <div class="col">
+                    <label for="copies">Copies</label>
+                    <input th:field="*{copies}" th:errorClass="bg-danger"
+                            name="copies" id="copies" type="number" class="form-control" placeholder="Copies">
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('copies')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="releaseDate">Release date</label>
+                    <input th:field="*{releaseDate}" th:errorClass="bg-danger"
+                            name="releaseDate" id="releaseDate" type="date" class="form-control" placeholder="Release date">
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('releaseDate')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+
+                <div class="col">
+                    <label for="producer">Producer</label>
+                    <input th:field="*{producer}" th:errorClass="bg-danger"
+                            name="producer" id="producer" type="text" class="form-control" placeholder="Producer">
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="artist">Artist</label>
+                    <select  th:field="*{artist}" th:errorClass="bg-danger"
+                             name="artist" id="artist" class="custom-select">
+                        <option value="" selected>Select Artist</option>
+                        <th:block th:each="artist : ${allArtists}">
+                            <option th:text="${artist}" th:value="${artist}"></option>
+                        </th:block>
+                    </select>
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('artist')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+
+                <div class="col">
+                    <label for="genre">Genre</label>
+                    <select th:field="*{genre}" th:errorClass="bg-danger"
+                            name="genre" id="genre" class="custom-select">
+                        <option value="" selected>Select genre</option>
+                        <th:block th:each="genre : ${allGenres}">
+                            <option th:text="${genre}" th:value="${genre}"></option>
+                        </th:block>
+                    </select>
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('genre')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="form-row m-5">
+                <div class="col">
+                    <label for="description">Description</label>
+                    <textarea th:field="*{description}" th:errorClass="bg-danger"
+                            name="description" id="description" type="text" class="form-control" placeholder="Description"></textarea>
+                    <!--ERRORS-->
+                    <th:block th:each="e : ${#fields.errors('description')}">
+                        <div class="mx-auto text-center">
+                            <small class="text-danger" th:text="${e}"> </small>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-primary btn-block w-50" type="submit">Add New Album</button>
+            </div>
+
+        </form>
+
+    </div>
+</main>
+
+<!-- FOOTER -->
+<th:block th:include="~{/fragments/footer}"></th:block>
+
+</body>
+</html>

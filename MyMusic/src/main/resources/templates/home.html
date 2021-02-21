@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+<th:block th:include="~{/fragments/head}"></th:block>
+
+<body>
+
+<header>
+    <!-- NAV -->
+    <th:block th:include="~{/fragments/nav}"></th:block>
+</header>
+
+<main class="p-5 align-content-center bg-blur my-main">
+    <h2 class="text-light border-bottom" th:text="|Total sold copies of all albums: ${totalCopies}|"></h2>
+
+    <div class="row">
+        <div class="col-md-3">
+
+            <th:block th:each="album : ${albums}">
+                <div class="card mb-4 box-shadow">
+                    <img th:src="*{album.getImgUrl()}"
+                         class="card-img-top" alt="Thumbnail [100%x225]"
+                         data-holder-rendered="true"
+                         style="height: 225px; width: 100%; display: block;">
+
+                    <div class="card-body">
+                        <div class="text-center">
+                            <p class="card-text border-bottom " th:text="|Name: ${album.getName()}|"></p>
+                            <p class="card-text border-bottom "
+                               th:text="|Artist: ${album.getArtist().getName().name()}|"></p>
+                            <p class="card-text border-bottom " th:text="|Genre: ${album.getGenre().name()}l|"></p>
+                            <p class="card-text border-bottom " th:text="|Price: ${album.getPrice()}|"></p>
+                            <p class="card-text border-bottom" th:text="|Release Date: ${album.getReleaseDate()}|"></p>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a th:href="@{/albums/delete/{id}(id=${album.getId()})}"
+                                   type="button" class="btn btn-sm btn-outline-secondary">Delete</a>
+                            </div>
+                            <small class="text-muted" th:text="|${album.getCopies()} copies|"> </small>
+                        </div>
+                    </div>
+
+                </div>
+            </th:block>
+
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<th:block th:include="~{/fragments/footer}"></th:block>
+
+</body>
+</html>
